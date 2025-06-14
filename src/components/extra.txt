@@ -1,0 +1,225 @@
+// src/components/Features.jsx
+import React from 'react'
+import { useInView } from 'react-intersection-observer'
+import { useNavigate, Link as RouterLink } from 'react-router-dom'
+import { 
+  FaBolt, 
+  FaShieldAlt, 
+  FaChartBar, 
+  FaSearch,
+  FaLock,
+  FaServer
+} from 'react-icons/fa'
+import './Features.css'
+
+const featuresData = [
+  {
+    icon: <FaBolt />,
+    title: 'Exam Gen',
+    description: 'Automatically generate and customize exams with AI-powered question banks.'
+  },
+  {
+    icon: <FaShieldAlt />,
+    title: 'Faculty Info',
+    description: 'Instant access to faculty profiles, publications, and office hours.'
+  },
+  {
+    icon: <FaChartBar />,
+    title: 'Real-Time Monitoring',
+    description: 'Get live alerts and analytics on campus activities and resource usage.'
+  },
+  {
+    icon: <FaSearch />,
+    title: 'Instant Analysis',
+    description: 'Search and analyze data trends across courses, attendance, and exams.'
+  },
+  {
+    icon: <FaLock />,
+    title: 'Secure Transactions',
+    description: 'Encrypted data handling for all student records and financial transactions.'
+  },
+  {
+    icon: <FaServer />,
+    title: 'Cloud Integration',
+    description: 'Seamless cloud backup and restore for all university databases.'
+  }
+]
+
+const Features = () => {
+  const [titleRef, titleInView] = useInView({ triggerOnce: true, threshold: 0.1 })
+  const [featuresRef, featuresInView] = useInView({ triggerOnce: true, threshold: 0.1 })
+  const navigate = useNavigate()
+
+  const handleDemo = () => {
+    // limited demo access flag
+    navigate('/chat?demo=true')
+  }
+
+  return (
+    <section id="features" className="features">
+      <div className="container">
+        <h2
+          ref={titleRef}
+          className={`section-title fade-in ${titleInView ? 'visible' : ''}`}
+        >
+          Our Features
+        </h2>
+
+        <div
+          ref={featuresRef}
+          className={`features-grid stagger-children ${featuresInView ? 'visible' : ''}`}
+        >
+          {featuresData.map((feature, index) => (
+            <div key={index} className="feature-card">
+              <div className="feature-icon">
+                {feature.icon}
+              </div>
+              <h3 className="feature-title">{feature.title}</h3>
+              <p className="feature-desc">{feature.description}</p>
+            </div>
+          ))}
+        </div>
+
+        <div className="features-cta">
+          <RouterLink to="/signup">
+            <button className="btn btn-secondary">Sign Up</button>
+          </RouterLink>
+          <button className="btn btn-primary" onClick={handleDemo}>
+            Demo
+          </button>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+export default Features
+
+/* ------------------------------------------------------- */
+
+/* src/components/Features.css */
+.features {
+  background: #121212;
+  color: #eee;
+  padding: 4rem 1rem;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section-title {
+  text-align: center;
+  font-size: 2.25rem;
+  margin-bottom: 2.5rem;
+  opacity: 0;
+  animation: fadeInUp 0.6s forwards;
+}
+.section-title.visible {
+  animation-delay: 0.2s;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 2rem;
+  opacity: 0;
+}
+.features-grid.visible {
+  animation: fadeInUp 0.8s forwards;
+  animation-delay: 0.4s;
+}
+
+.stagger-children .feature-card {
+  background: #1b1b1b;
+  border-radius: 8px;
+  padding: 2rem 1.5rem;
+  text-align: center;
+  transition: transform 0.3s, box-shadow 0.3s;
+  opacity: 0;
+}
+.stagger-children.visible .feature-card:nth-child(1) { animation: fadeInUp 0.6s forwards 0.5s; }
+.stagger-children.visible .feature-card:nth-child(2) { animation: fadeInUp 0.6s forwards 0.6s; }
+.stagger-children.visible .feature-card:nth-child(3) { animation: fadeInUp 0.6s forwards 0.7s; }
+.stagger-children.visible .feature-card:nth-child(4) { animation: fadeInUp 0.6s forwards 0.8s; }
+.stagger-children.visible .feature-card:nth-child(5) { animation: fadeInUp 0.6s forwards 0.9s; }
+.stagger-children.visible .feature-card:nth-child(6) { animation: fadeInUp 0.6s forwards 1.0s; }
+
+.feature-card:hover {
+  transform: translateY(-6px) scale(1.03);
+  box-shadow: 0 6px 20px rgba(0,212,98,0.3);
+}
+
+.feature-icon {
+  font-size: 2.5rem;
+  color: #00d462;
+  margin-bottom: 1rem;
+  transition: color 0.3s;
+}
+.feature-card:hover .feature-icon {
+  color: #fff;
+}
+
+.feature-title {
+  font-size: 1.25rem;
+  margin-bottom: 0.75rem;
+}
+.feature-desc {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #ccc;
+}
+
+.features-cta {
+  margin-top: 3rem;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.btn {
+  padding: 0.75rem 1.75rem;
+  font-size: 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+}
+.btn-secondary {
+  background: transparent;
+  border: 2px solid #00d462;
+  color: #00d462;
+}
+.btn-secondary:hover {
+  background: #00d462;
+  color: #121212;
+}
+.btn-primary {
+  background: #00d462;
+  border: none;
+  color: #121212;
+}
+.btn-primary:hover {
+  transform: scale(1.05);
+}
+
+@media (max-width: 600px) {
+  .features-grid {
+    grid-template-columns: 1fr;
+  }
+  .features-cta {
+    flex-direction: column;
+  }
+}
