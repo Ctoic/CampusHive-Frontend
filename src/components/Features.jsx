@@ -8,39 +8,7 @@ import {
   FaServer
 } from 'react-icons/fa';
 import './Features.css';
-
-const featuresData = [
-  {
-    icon: <FaBolt />,
-    title: 'Exam Gen',
-    description: 'Automatically generate and customize exams with AI-powered question banks. (12 min)',
-  },
-  {
-    icon: <FaShieldAlt />,
-    title: 'Faculty Info',
-    description: 'Instant access to faculty profiles, publications, and office hours. (10 min)',
-  },
-  {
-    icon: <FaChartBar />,
-    title: 'Real-Time Monitoring',
-    description: 'Get live alerts and analytics on campus activities and resource usage. (15 min)',
-  },
-  {
-    icon: <FaSearch />,
-    title: 'Instant Analysis',
-    description: 'Search and analyze data trends across courses, attendance, and exams. (8 min)',
-  },
-  {
-    icon: <FaLock />,
-    title: 'Secure Transactions',
-    description: 'Encrypted data handling for all student records and financial transactions. (12 min)',
-  },
-  {
-    icon: <FaServer />,
-    title: 'Cloud Integration',
-    description: 'Seamless cloud backup and restore for all university databases. (14 min)',
-  }
-];
+import { features } from './FeaturesCarousel';
 
 const Features = () => {
   const [titleInView, setTitleInView] = useState(false);
@@ -57,7 +25,7 @@ const Features = () => {
     if (carouselContainerRef.current) {
       const cardWidth = 320; // Width of each card
       const gap = 32; // Gap between cards
-      const nextIndex = (currentIndex + 1) % featuresData.length;
+      const nextIndex = (currentIndex + 1) % features.length;
       const scrollPosition = (cardWidth + gap) * nextIndex;
       
       carouselContainerRef.current.scrollTo({
@@ -72,7 +40,7 @@ const Features = () => {
     if (carouselContainerRef.current) {
       const cardWidth = 320; // Width of each card
       const gap = 32; // Gap between cards
-      const prevIndex = (currentIndex - 1 + featuresData.length) % featuresData.length;
+      const prevIndex = (currentIndex - 1 + features.length) % features.length;
       const scrollPosition = (cardWidth + gap) * prevIndex;
       
       carouselContainerRef.current.scrollTo({
@@ -249,16 +217,19 @@ const Features = () => {
             ref={carouselContainerRef}
             className={`features-carousel ${carouselInView ? 'visible' : ''}`}
           >
-            {featuresData.length > 0 ? (
-              featuresData.map((feature, index) => (
+            {features.length > 0 ? (
+              features.map((feature, index) => (
                 <div className="e-card" key={index}>
                   <div className="wave"></div>
                   <div className="wave"></div>
                   <div className="wave"></div>
                   <div className="infotop">
-                    <div className="card-icon">{feature.icon}</div>
+                    <div className="card-category">{feature.category}</div>
                     <div className="card-title">{feature.title}</div>
-                    <div className="card-description">{feature.description}</div>
+                    <div className="card-description">{feature.content}</div>
+                    <div className="card-image">
+                      <img src={feature.src} alt={feature.title} style={{width: '100%', height: '120px', objectFit: 'cover', borderRadius: '8px'}} />
+                    </div>
                   </div>
                 </div>
               ))

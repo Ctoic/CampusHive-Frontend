@@ -229,7 +229,7 @@ export const BlurImage = ({
   );
 };
 
-const features = [
+export const features = [
   {
     category: "Student Assistant",
     title: "Academic Information",

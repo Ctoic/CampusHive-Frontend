@@ -20,15 +20,6 @@ An intelligent RAG-based chatbot system designed to enhance the academic experie
 - Publication tracking
 - Schedule management
 
-## 🚀 Getting Started
-
-### Prerequisites
-- Python 3.8+
-- Node.js 16+
-- ChromaDB
-- LangChain
-- FastAPI
-
 ### Installation
 
 1. Clone the repository
@@ -37,9 +28,6 @@ git clone https://github.com/yourusername/campus-hive.git
 cd campus-hive
 ```
 
-2. Install Python dependencies
-```bash
-pip install -r requirements.txt
 ```
 
 3. Install frontend dependencies
@@ -63,15 +51,6 @@ python scripts/init_db.py
 
 ```
 campus-hive/
-├── backend/
-│   ├── app/
-│   │   ├── api/
-│   │   ├── core/
-│   │   ├── models/
-│   │   ├── services/
-│   │   └── utils/
-│   ├── tests/
-│   └── requirements.txt
 ├── frontend/
 │   ├── src/
 │   │   ├── components/
@@ -79,15 +58,6 @@ campus-hive/
 │   │   ├── services/
 │   │   └── utils/
 │   └── package.json
-├── data/
-│   ├── raw/
-│   ├── processed/
-│   └── embeddings/
-└── docs/
-    ├── api/
-    ├── deployment/
-    └── development/
-```
 
 ## 🔧 Configuration
 
@@ -107,10 +77,7 @@ NEXT_PUBLIC_API_URL=http://localhost:8000
 
 ## 🛠️ Development
 
-### Running the Backend
-```bash
-cd backend
-uvicorn app.main:app --reload
+
 ```
 
 ### Running the Frontend
@@ -148,12 +115,7 @@ npm run dev
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🙏 Acknowledgments
 
-- LangChain for the RAG implementation
-- ChromaDB for vector storage
-- FastAPI for the backend framework
-- React for the frontend framework
 
 ## 📞 Support
 
