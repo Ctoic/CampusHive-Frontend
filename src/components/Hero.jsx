@@ -87,11 +87,19 @@ const Hero = () => {
             ref={visualRef}
             className={`hero-visual ${visualInView ? 'visible' : ''}`}
           >
-            {/* Blob Container */}
+            {/* Image Container */}
             <div className="visual-container">
               <div className="morphing-card">
                 {/* Glass Card */}
-                <div className="glass-card"></div>
+                <div className="glass-card">
+                  <img 
+                    src="https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=1280&auto=format&fit=crop" 
+                    alt="AI and Learning Interface" 
+                    className="hero-image"
+                    loading="eager"
+                  />
+                  <div className="image-overlay"></div>
+                </div>
                 
                 {/* Floating Elements */}
                 <div className="floating-elements">
