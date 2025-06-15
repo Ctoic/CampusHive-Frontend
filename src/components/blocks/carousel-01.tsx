@@ -191,8 +191,8 @@ export default function Carousel01() {
 
   const items: CarouselItemType[] = [
     {
-      category: "Outdoor Adventures",
-      title: "Conquer the Wild",
+      category: "Exam Generation",
+      title: "Conquer the Exams",
       description:
         "Explore breathtaking landscapes and challenge yourself with thrilling outdoor adventures. Whether it's hiking, kayaking, or rock climbing, adventure awaits.",
       imageSrc: "/dummy-image.svg",

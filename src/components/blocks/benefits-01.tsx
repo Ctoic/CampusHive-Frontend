@@ -11,27 +11,27 @@ interface BenefitsProps {
 const benefitList: BenefitsProps[] = [
   {
     icon: "Blocks",
-    title: "Build Brand Trust",
+    title: "Smart Information Access",
     description:
-      "Establish credibility and foster long-lasting relationships with your customers through authentic brand experiences.",
+      "Students can instantly access comprehensive information about courses, faculty, publications, and degree programs through an intelligent chatbot interface.",
   },
   {
     icon: "LineChart",
-    title: "More Leads",
+    title: "Faculty Assistant",
     description:
-      "Generate high-quality leads that convert into loyal customers with our proven marketing strategies.",
+      "Streamline daily academic tasks with automated assistance for creating exams, managing announcements, and tracking course compliance with CLOs and PLOs.",
   },
   {
     icon: "Wallet",
-    title: "Higher Conversions",
+    title: "Efficient Course Management",
     description:
-      "Optimize your sales funnel and turn more prospects into paying customers with data-driven insights.",
+      "Faculty can easily manage class schedules, create and distribute quizzes, and monitor student progress through an integrated platform.",
   },
   {
     icon: "Sparkle",
-    title: "Test Marketing Ideas",
+    title: "Personalized Support",
     description:
-      "Experiment with innovative marketing approaches and discover what resonates best with your audience.",
+      "Get instant answers to queries about university policies, course requirements, and academic resources, tailored to both student and faculty needs.",
   },
 ];
 
@@ -52,12 +52,10 @@ export default function Benefits01() {
               BENEFITS
             </Badge>
             <h2 className="text-4xl font-bold sm:text-6xl tracking-tight bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
-              Why Choose Us
+              Why Choose Campus Hive
             </h2>
             <p className="text-xl text-muted-foreground leading-relaxed">
-              Transform your business with our comprehensive solutions designed
-              to drive growth, increase efficiency, and deliver exceptional
-              results.
+              Experience a smarter way of learning and teaching with our AI-powered platform designed to enhance academic excellence and streamline educational processes.
             </p>
           </div>
 

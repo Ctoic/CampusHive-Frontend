@@ -120,39 +120,39 @@ export default function Carousel() {
 
   const items = [
     {
-      category: "Outdoor Adventures",
-      title: "Conquer the Wild",
+      category: "Student Support",
+      title: "Academic Information Hub",
       description:
-        "Explore breathtaking landscapes and challenge yourself with thrilling outdoor adventures. Whether it's hiking, kayaking, or rock climbing, adventure awaits.",
-      imageSrc: "/dummy-image.svg",
+        "Access comprehensive information about degree programs, course schedules, and faculty profiles. Get instant answers about university policies, course prerequisites, and program structures through our intelligent chatbot interface.",
+      imageSrc: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&q=80&w=900",
     },
     {
-      category: "Culinary Delights",
-      title: "Savor Every Bite",
+      category: "Faculty Assistant",
+      title: "Smart Teaching Tools",
       description:
-        "Indulge in mouthwatering dishes from around the world. From gourmet meals to street food favorites, experience flavors that excite your taste buds.",
-      imageSrc: "/dummy-image.svg",
+        "Streamline your teaching workflow with automated tools for creating exams, managing class announcements, and tracking course compliance. Get daily schedule updates and manage your classroom activities efficiently.",
+      imageSrc: "https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&q=80&w=900",
     },
     {
-      category: "Tech Gadgets",
-      title: "Innovate Your Life",
+      category: "Research & Publications",
+      title: "Academic Excellence",
       description:
-        "Discover cutting-edge technology designed to make your life easier. From smart devices to futuristic tools, stay ahead with the latest innovations.",
-      imageSrc: "/dummy-image.svg",
+        "Stay updated with faculty research and publications. Our system automatically tracks and displays research activities, publications, and academic achievements from Google Scholar and LinkedIn.",
+      imageSrc: "https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&q=80&w=900",
     },
     {
-      category: "Wellness & Mindfulness",
-      title: "Find Your Zen",
+      category: "Course Management",
+      title: "Learning Analytics",
       description:
-        "Prioritize your mental and physical well-being with practices that promote relaxation, balance, and self-care. A healthier life starts with mindfulness.",
-      imageSrc: "/dummy-image.svg",
+        "Monitor student progress and analyze learning outcomes with advanced analytics. Generate comprehensive reports for accreditation and ensure course outlines align with CLOs and PLOs.",
+      imageSrc: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=900",
     },
     {
-      category: "Mystery & Exploration",
-      title: "Uncover Hidden Secrets",
+      category: "Smart Communication",
+      title: "Seamless Interaction",
       description:
-        "Step into the unknown and explore the world's greatest mysteries. From ancient ruins to urban legends, embark on a journey of discovery.",
-      imageSrc: "/dummy-image.svg",
+        "Experience smooth communication between students and faculty. Make class announcements, share important updates, and get instant responses to academic queries through our integrated platform.",
+      imageSrc: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&q=80&w=900",
     },
   ];
 
@@ -216,11 +216,10 @@ export default function Carousel() {
             FEATURES
           </span>
           <h2 className="text-4xl font-bold sm:text-6xl tracking-tight text-white">
-            Explore Our Features
+            Campus Hive Features
           </h2>
           <p className="text-xl text-gray-400 leading-relaxed">
-            Discover the powerful tools and capabilities that make our platform stand out.
-            Experience innovation at its finest.
+            Discover how our AI-powered platform revolutionizes academic life for both students and faculty members. Experience seamless learning and teaching with intelligent assistance.
           </p>
         </div>
 

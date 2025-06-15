@@ -46,7 +46,7 @@ export default function Benefits() {
                 BENEFITS
               </span>
               <h2 className="text-4xl font-bold sm:text-6xl tracking-tight text-white">
-                Why Choose Camus Hive
+                Why Choose Campus Hive
               </h2>
               <p className="text-xl text-gray-400 leading-relaxed">
                 Experience a smarter way of learning and teaching with our AI-powered platform designed to enhance academic excellence and streamline educational processes.
