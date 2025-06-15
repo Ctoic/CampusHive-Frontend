@@ -33,10 +33,18 @@ export default function FAQ() {
   };
 
   return (
-    <section className="pb-20 pt-20 md:pb-32 md:pt-32 bg-[#0A0A0A] text-white">
-      <div className="container mx-auto md:w-[700px]">
-        <div className="text-center space-y-4 pb-8 mx-auto">
-          <Badge className="bg-primary text-white">FAQ</Badge>
+    <section className="relative pb-20 pt-20 md:pb-32 md:pt-32 bg-[#0A0A0A] text-white overflow-hidden">
+      {/* Background decorative elements */}
+      <div className="absolute inset-0 -z-10">
+        <div className="absolute top-0 left-1/4 w-72 h-72 bg-[#00d462]/5 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-[#00d462]/5 rounded-full blur-3xl"></div>
+      </div>
+
+      <div className="container mx-auto px-4 max-w-4xl">
+        <div className="text-center space-y-4 pb-12 mx-auto">
+          <Badge className="bg-[#00d462] text-black hover:bg-[#00d462]/90 transition-colors duration-300">
+            FAQ
+          </Badge>
           <h2 className="text-3xl font-bold sm:text-5xl tracking-tight text-white">
             Frequently asked questions
           </h2>
@@ -45,43 +53,53 @@ export default function FAQ() {
           </p>
         </div>
 
-        <div className="mx-auto mb-12 md:max-w-[800px]">
+        <div className="mx-auto space-y-3">
           {FAQList.map((faq, index) => (
             <div
               key={index}
-              className="w-full border border-gray-800 rounded-lg overflow-hidden mt-2 bg-[#111111]"
+              className="group relative bg-[#111111] border border-gray-800/50 rounded-xl overflow-hidden transition-all duration-300 hover:border-[#00d462]/30 hover:shadow-lg hover:shadow-[#00d462]/5"
             >
-              <h3 className="flex">
+              {/* Gradient overlay */}
+              <div className="absolute inset-0 bg-gradient-to-r from-[#00d462]/5 via-transparent to-[#00d462]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+
+              <div className="flex flex-col">
                 <button
                   type="button"
                   onClick={() => toggleAccordion(index)}
-                  className="flex flex-1 items-center justify-between py-4 px-4 font-medium transition-all hover:text-primary text-white"
+                  className="flex flex-1 items-center justify-between py-5 px-6 font-medium transition-all hover:text-[#00d462] text-white group-hover:bg-[#111111]/80"
                   aria-expanded={openIndex === index}
                 >
-                  {faq.question}
+                  <span className="text-base sm:text-lg">{faq.question}</span>
                   <ChevronDown
-                    className={`h-4 w-4 transition-transform duration-200 ${
-                      openIndex === index ? "rotate-180" : ""
+                    className={`h-5 w-5 transition-all duration-300 ${
+                      openIndex === index ? "rotate-180 text-[#00d462]" : "text-gray-400 group-hover:text-[#00d462]"
                     }`}
                   />
                 </button>
-              </h3>
-              {openIndex === index && (
-                <div className="px-4 pb-4 text-sm text-gray-300 transition-all">
-                  {faq.answer}
-                </div>
-              )}
+
+{openIndex === index && (
+                  <div className="px-6 pb-5 text-base text-gray-300 animate-in slide-in-from-top-2 duration-300">
+                    <div className="h-px bg-gradient-to-r from-[#00d462]/20 via-[#00d462]/10 to-transparent mb-4"></div>
+                    {faq.answer}
+                  </div>
+                )}
+              </div>
             </div>
           ))}
         </div>
 
-        <h4 className="text-center text-sm font-medium tracking-tight text-gray-400">
-          Still have questions? Email us at{" "}
-          <a href="mailto:support@campushive.com" className="underline text-primary hover:text-primary/80">
-            support@campushive.com
-          </a>
-        </h4>
+        <div className="mt-12 text-center">
+          <h4 className="text-sm font-medium tracking-tight text-gray-400">
+            Still have questions? Email us at{" "}
+            <a 
+              href="mailto:support@campushive.com" 
+              className="text-[#00d462] hover:text-[#00d462]/80 transition-colors duration-300 underline underline-offset-4"
+            >
+              support@campushive.com
+            </a>
+          </h4>
+        </div>
       </div>
     </section>
   );
-} 
+}
