@@ -228,3 +228,30 @@ export const BlurImage = ({
       {...rest} />
   );
 };
+
+const features = [
+  {
+    category: "Student Assistant",
+    title: "Academic Information",
+    content: "Get instant access to comprehensive information about degree programs, course schedules, faculty profiles, and university policies. Our chatbot provides detailed insights into academic requirements, course prerequisites, and program structures.",
+    src: "/images/student-info.jpg"
+  },
+  {
+    category: "Faculty Support",
+    title: "Daily Operations",
+    content: "Streamline your daily academic tasks with our intelligent assistant. Make class announcements, manage your schedule, create and grade assessments, and ensure course outline compliance with CLOs and PLOs.",
+    src: "/images/faculty-support.jpg"
+  },
+  {
+    category: "Research Hub",
+    title: "Publication Tracking",
+    content: "Stay updated with the latest research developments. Our system automatically tracks faculty publications from Google Scholar and LinkedIn, providing real-time updates on research activities and academic achievements.",
+    src: "/images/research-hub.jpg"
+  },
+  {
+    category: "Smart Analytics",
+    title: "Course Management",
+    content: "Advanced analytics for course management and assessment. Monitor student progress, analyze learning outcomes, and generate comprehensive reports for accreditation and quality assurance purposes.",
+    src: "/images/analytics.jpg"
+  }
+];
