@@ -15,13 +15,13 @@
   align-items: center;
   z-index: 1000;
   transition: all 0.3s ease;
-  background: transparent;
+  background: transparent !important;
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
 }
 
 .navbar.scrolled {
-  background: rgba(10, 10, 10, 0.95);
+  background:rgba(10, 10, 10, 0);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
