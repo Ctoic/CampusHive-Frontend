@@ -4,12 +4,14 @@ import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import Benefits from './components/Benefits'
 import Carousel from './components/Carousel'
+import CTA from './components/CTA'
 import Team from './components/Team'
 import Footer from './components/Footer'
 import Signup from './components/Signup'
 import Login from './components/Login'
 import FAQ from './components/FAQ'
 import Chatbot from './components/Chatbot'
+import ContactInfo from './components/contact-info'
 import { ShootingStars } from './components/ui/shooting-stars'
 import { StarsBackground } from './components/ui/stars-background'
 
@@ -35,6 +37,7 @@ function AppContent() {
                   <Hero />
                   <Benefits />
                   <Carousel />
+                  <CTA />
                   <Team />
                   <FAQ />
                 </main>
@@ -42,6 +45,13 @@ function AppContent() {
               <Route path="/signup" element={<Signup />} />
               <Route path="/login" element={<Login />} />
               <Route path="/chatbot" element={<Chatbot />} />
+              <Route path="/contact" element={
+                <main className="container mx-auto px-4 py-16">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <ContactInfo />
+                  </div>
+                </main>
+              } />
             </Routes>
             <Footer />
           </div>
@@ -58,7 +68,7 @@ function AppContent() {
 
 function App() {
   return (
-    <Router>
+    <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
       <AppContent />
     </Router>
   );

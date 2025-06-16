@@ -30,7 +30,7 @@ const benefitList = [
 
 export default function Benefits() {
   return (
-    <section className="relative pb-20 pt-20 md:pb-32 md:pt-32 w-full bg-[#0A0A0A]">
+    <section id="benefits" className="relative pb-20 pt-20 md:pb-32 md:pt-32 w-full bg-[#0A0A0A]">
       <div className="container mx-auto px-4">
         {/* Background decorative elements */}
         <div className="absolute inset-0 -z-10">

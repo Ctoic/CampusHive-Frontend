@@ -1,4 +1,4 @@
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Sparkles, HelpCircle } from "lucide-react";
 import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 
@@ -28,76 +28,126 @@ const FAQList = [
 export default function FAQ() {
   const [openIndex, setOpenIndex] = useState(null);
 
-  const toggleAccordion = (index) => {
-    setOpenIndex(openIndex === index ? null : index);
-  };
-
   return (
-    <section className="relative pb-20 pt-20 md:pb-32 md:pt-32 bg-[#0A0A0A] text-white overflow-hidden">
-      {/* Background decorative elements */}
+    <section id="faq" className="relative pb-20 pt-20 md:pb-32 md:pt-32 bg-[#0A0A0A] text-white overflow-hidden">
+      {/* Enhanced Background decorative elements */}
       <div className="absolute inset-0 -z-10">
-        <div className="absolute top-0 left-1/4 w-72 h-72 bg-[#00d462]/5 rounded-full blur-3xl"></div>
+        <div className="absolute top-0 left-1/4 w-72 h-72 bg-[#00d462]/10 rounded-full blur-3xl animate-pulse"></div>
         <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-[#00d462]/5 rounded-full blur-3xl"></div>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-[#00d462]/3 rounded-full blur-3xl"></div>
+        
+        {/* Floating particles */}
+        <div className="absolute top-20 left-10 w-2 h-2 bg-[#00d462]/30 rounded-full animate-bounce"></div>
+        <div className="absolute top-40 right-20 w-1 h-1 bg-[#00d462]/40 rounded-full animate-bounce" style={{ animationDelay: '0.5s' }}></div>
+        <div className="absolute bottom-32 left-20 w-1.5 h-1.5 bg-[#00d462]/25 rounded-full animate-bounce" style={{ animationDelay: '1s' }}></div>
       </div>
 
       <div className="container mx-auto px-4 max-w-4xl">
-        <div className="text-center space-y-4 pb-12 mx-auto">
-          <Badge className="bg-[#00d462] text-black hover:bg-[#00d462]/90 transition-colors duration-300">
-            FAQ
-          </Badge>
-          <h2 className="text-3xl font-bold sm:text-5xl tracking-tight text-white">
+        <div className="text-center space-y-6 pb-16">
+          <div className="relative inline-block">
+            <Badge className="bg-[#00d462] text-black hover:bg-[#00d462]/90 transition-all duration-300 px-4 py-2 text-sm font-semibold tracking-wide shadow-lg shadow-[#00d462]/20">
+              <HelpCircle className="w-4 h-4 mr-2" />
+              FAQ
+            </Badge>
+            <Sparkles className="absolute -top-2 -right-2 w-4 h-4 text-[#00d462] animate-pulse" />
+          </div>
+          
+          <h2 className="text-4xl font-bold sm:text-6xl tracking-tight text-white bg-gradient-to-r from-white via-gray-100 to-gray-300 bg-clip-text text-transparent">
             Frequently asked questions
           </h2>
-          <p className="text-xl text-gray-400 pt-1">
-            Everything you need to know about CampusHive
+          
+          <p className="text-xl text-gray-400 max-w-2xl mx-auto leading-relaxed">
+            Everything you need to know about CampusHive to get started on your journey
           </p>
+          
+          {/* Decorative line */}
+          <div className="w-24 h-1 bg-gradient-to-r from-transparent via-[#00d462] to-transparent mx-auto rounded-full"></div>
         </div>
 
-        <div className="mx-auto space-y-3">
+        <div className="space-y-4">
           {FAQList.map((faq, index) => (
             <div
               key={index}
-              className="group relative bg-[#111111] border border-gray-800/50 rounded-xl overflow-hidden transition-all duration-300 hover:border-[#00d462]/30 hover:shadow-lg hover:shadow-[#00d462]/5"
+              className="group relative bg-gradient-to-r from-[#111111] to-[#0f0f0f] border border-gray-800/50 rounded-2xl overflow-hidden transition-all duration-500 hover:border-[#00d462]/40 hover:shadow-2xl hover:shadow-[#00d462]/10 hover:scale-[1.02] transform"
             >
-              {/* Gradient overlay */}
-              <div className="absolute inset-0 bg-gradient-to-r from-[#00d462]/5 via-transparent to-[#00d462]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-
-              <div className="flex flex-col">
-                <button
-                  type="button"
-                  onClick={() => toggleAccordion(index)}
-                  className="flex flex-1 items-center justify-between py-5 px-6 font-medium transition-all hover:text-[#00d462] text-white group-hover:bg-[#111111]/80"
-                  aria-expanded={openIndex === index}
-                >
-                  <span className="text-base sm:text-lg">{faq.question}</span>
+              {/* Animated gradient overlay */}
+              <div className="absolute inset-0 bg-gradient-to-r from-[#00d462]/5 via-transparent to-[#00d462]/5 opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
+              
+              {/* Glow effect */}
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#00d462]/10 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 blur-xl"></div>
+              
+              <button
+                onClick={() => setOpenIndex(openIndex === index ? null : index)}
+                className="relative w-full px-8 py-6 text-left flex justify-between items-center transition-all duration-300 hover:bg-[#111111]/50 group-hover:text-[#00d462]"
+              >
+                <div className="flex items-center space-x-4">
+                  <div className="w-2 h-2 bg-[#00d462] rounded-full opacity-60 group-hover:opacity-100 transition-all duration-300 group-hover:scale-125"></div>
+                  <span className="font-semibold text-lg text-white group-hover:text-[#00d462] transition-colors duration-300">
+                    {faq.question}
+                  </span>
+                </div>
+                
+                <div className="relative">
                   <ChevronDown
-                    className={`h-5 w-5 transition-all duration-300 ${
-                      openIndex === index ? "rotate-180 text-[#00d462]" : "text-gray-400 group-hover:text-[#00d462]"
+                    className={`w-6 h-6 transition-all duration-500 ${
+                      openIndex === index 
+                        ? "rotate-180 text-[#00d462] scale-110" 
+                        : "text-gray-400 group-hover:text-[#00d462] group-hover:scale-110"
                     }`}
                   />
-                </button>
+                  {/* Subtle glow around icon */}
+                  <div className={`absolute inset-0 rounded-full transition-all duration-300 ${
+                    openIndex === index ? "shadow-lg shadow-[#00d462]/50" : ""
+                  }`}></div>
+                </div>
+              </button>
 
-{openIndex === index && (
-                  <div className="px-6 pb-5 text-base text-gray-300 animate-in slide-in-from-top-2 duration-300">
-                    <div className="h-px bg-gradient-to-r from-[#00d462]/20 via-[#00d462]/10 to-transparent mb-4"></div>
-                    {faq.answer}
+              {openIndex === index && (
+                <div className="relative">
+                  {/* Animated divider */}
+                  <div className="mx-8 h-px bg-gradient-to-r from-transparent via-[#00d462]/30 to-transparent"></div>
+                  
+                  <div className="px-8 py-6 relative">
+                    {/* Content background glow */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-[#00d462]/5 to-transparent rounded-b-2xl"></div>
+                    
+                    <p className="text-gray-300 leading-relaxed text-base relative z-10">
+                      {faq.answer}
+                    </p>
+                    
+                    {/* Subtle accent dot */}
+                    <div className="absolute bottom-4 right-8 w-1 h-1 bg-[#00d462]/40 rounded-full animate-pulse"></div>
                   </div>
-                )}
-              </div>
+                </div>
+              )}
             </div>
           ))}
         </div>
 
-        <div className="mt-12 text-center">
-          <h4 className="text-sm font-medium tracking-tight text-gray-400">
-            Still have questions? Email us at{" "}
+        {/* Enhanced footer section */}
+        <div className="mt-16 text-center">
+          <div className="relative inline-block p-8 rounded-2xl bg-gradient-to-r from-[#111111]/50 to-[#0f0f0f]/50 border border-gray-800/30 backdrop-blur-sm">
+            <div className="absolute inset-0 bg-gradient-to-r from-[#00d462]/5 to-transparent rounded-2xl"></div>
+            
+            <h4 className="text-lg font-semibold text-white mb-2 relative z-10">
+              Still have questions?
+            </h4>
+            <p className="text-gray-400 mb-4 relative z-10">
+              We're here to help! Reach out to our support team
+            </p>
+            
             <a 
               href="mailto:support@campushive.com" 
-              className="text-[#00d462] hover:text-[#00d462]/80 transition-colors duration-300 underline underline-offset-4"
+              className="relative z-10 inline-flex items-center px-6 py-3 bg-[#00d462] text-black font-semibold rounded-lg hover:bg-[#00d462]/90 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-[#00d462]/30"
             >
+              <HelpCircle className="w-4 h-4 mr-2" />
               support@campushive.com
             </a>
-          </h4>
+            
+            {/* Decorative elements */}
+            <div className="absolute top-2 right-2 w-2 h-2 bg-[#00d462]/30 rounded-full animate-ping"></div>
+            <div className="absolute bottom-2 left-2 w-1 h-1 bg-[#00d462]/40 rounded-full animate-pulse"></div>
+          </div>
         </div>
       </div>
     </section>
