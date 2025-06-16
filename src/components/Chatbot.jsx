@@ -251,21 +251,22 @@ const ChatbotPage = () => {
 							<div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
 								{[
 									{
-										action: "Generate Timetable",
+										action:
+											"Provide me timetable for information security cs section a ppit cs section c and pf cs section a",
 										icon: FaRegCalendarAlt,
 										title: "Generate Timetable",
 										description:
 											"Create your personalized class schedule with conflict detection",
 									},
 									{
-										action: "Faculty Info",
+										action: "What is email address of dr akhtar jamil?",
 										icon: FaUniversity,
 										title: "Faculty Directory",
 										description:
 											"Explore professor profiles, research areas, and office hours",
 									},
 									{
-										action: "Financial Aid Info",
+										action: "Tell me about the scholarships available.",
 										icon: FaMoneyBillWave,
 										title: "Financial Aid",
 										description:
@@ -412,12 +413,6 @@ const ChatbotPage = () => {
 									<FaPaperPlane className="text-sm" />
 								</button>
 							</div>
-
-							{/* Disclaimer Text */}
-							<p className="text-center text-xs text-gray-500 mt-3">
-								CampusHive AI can make mistakes. Consider checking important
-								information.
-							</p>
 						</div>
 					</div>
 				</div>
