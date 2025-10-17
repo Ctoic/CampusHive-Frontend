@@ -107,8 +107,13 @@ export const ChatProvider = ({ children }) => {
       setLoading(true);
       setError(null);
 
+      // If a specific sessionId is provided, load that session first
+      if (sessionId && sessionId !== currentSession?.id) {
+        await loadSession(sessionId);
+        targetSessionId = sessionId;
+      }
       // Ensure we have a concrete session (avoid using a shared 'default')
-      if (!targetSessionId) {
+      else if (!targetSessionId) {
         const created = await createSession('New Chat');
         targetSessionId = created?.id;
         if (targetSessionId) {
@@ -207,7 +212,7 @@ export const ChatProvider = ({ children }) => {
     } finally {
       setLoading(false);
     }
-  }, [currentSession, loadSessions]);
+  }, [currentSession, loadSessions, loadSession, createSession]);
 
   // Clear current session
   const clearCurrentSession = useCallback(() => {

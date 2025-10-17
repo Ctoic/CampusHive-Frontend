@@ -22,6 +22,7 @@ import { useNavigate } from "react-router-dom";
 import logo from "../assets/logo.png";
 
 const IntegratedChatbot = () => {
+	// Component for integrated chatbot interface
 	const navigate = useNavigate();
 	const { user, logout } = useAuth();
 	const {
@@ -41,7 +42,6 @@ const IntegratedChatbot = () => {
 	} = useChat();
 
 	const [input, setInput] = useState("");
-	const [sidebarOpen, setSidebarOpen] = useState(true);
 	const endRef = useRef(null);
 
 	useEffect(() => {
@@ -59,11 +59,12 @@ const IntegratedChatbot = () => {
 
   const newChat = async () => {
     try {
+      // Create new session without clearing current one first
+      // This ensures we get a fresh session ID
       const created = await createSession("New Chat");
       if (created?.id) {
+        // Load the new session which will become the current one
         await loadSession(created.id);
-      } else {
-        clearCurrentSession();
       }
     } catch (error) {
       console.error("Failed to create new chat:", error);
@@ -88,10 +89,19 @@ const IntegratedChatbot = () => {
 	};
 
   const handleQuickAction = async (action) => {
-    if (!currentSession) {
-      await newChat();
+    try {
+      // If no current session, create a new one
+      if (!currentSession) {
+        const created = await createSession("New Chat");
+        if (created?.id) {
+          await loadSession(created.id);
+        }
+      }
+      // Send message to current session (or newly created one)
+      await sendMessage(action, currentSession?.id);
+    } catch (error) {
+      console.error("Failed to handle quick action:", error);
     }
-    await sendMessage(action);
   };
 
   const send = async () => {
@@ -99,8 +109,15 @@ const IntegratedChatbot = () => {
 		const currentInput = input;
 		setInput("");
 		try {
-      // sendMessage will auto-create a session if none is selected
-      await sendMessage(currentInput);
+      // If no current session, create a new one
+      if (!currentSession) {
+        const created = await createSession("New Chat");
+        if (created?.id) {
+          await loadSession(created.id);
+        }
+      }
+      // Send message to current session (or newly created one)
+      await sendMessage(currentInput, currentSession?.id);
 		} catch (error) {
 			console.error("Failed to send message:", error);
 		}
@@ -291,23 +308,11 @@ const IntegratedChatbot = () => {
 		return (
 			<div className="flex bg-black h-screen overflow-hidden">
 			{/* Sidebar */}
-			{/* please add the*/}
-			<div
-				className={`${
-					sidebarOpen ? "w-72" : "w-0"
-				} transition-all duration-300 bg-[#0D0D0D] border-r border-gray-800 flex flex-col overflow-hidden`}
-			>
+			<div className="w-72 bg-[#0D0D0D] flex flex-col overflow-hidden">
 				<div className="p-6">
 					<div className="flex items-center gap-2">
 						<img src={logo} alt="CampusHive" className="w-10 h-10" />
 						<h1 className="text-white font-semibold text-xl">CampusHive</h1>
-						<button
-							onClick={() => setSidebarOpen(false)}
-						className="ml-auto p-2 text-gray-400 hover:bg-gray-800 rounded-lg transition-colors"
-							title="Collapse sidebar"
-						>
-							<FaBars className="text-sm rotate-180" />
-						</button>
 					</div>
 				</div>
 				{/* Sidebar Header */}
@@ -564,16 +569,6 @@ const IntegratedChatbot = () => {
 					</div>
 				</div>
 
-				{/* Floating expand button when sidebar is closed */}
-				{!sidebarOpen && (
-					<button
-						onClick={() => setSidebarOpen(true)}
-						className="fixed left-4 bottom-5 z-20 p-3 rounded-full bg-gray-800 hover:bg-gray-700 text-white shadow-lg transition-colors"
-						title="Expand sidebar"
-					>
-						<FaBars className="text-base" />
-					</button>
-				)}
 			</main>
 		</div>
 	);
