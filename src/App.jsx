@@ -16,9 +16,15 @@ import Signup from "./components/Signup";
 import Login from "./components/Login";
 import FAQ from "./components/FAQ";
 import Chatbot from "./components/Chatbot";
+import IntegratedChatbot from "./components/IntegratedChatbot";
+import AdminDashboard from "./components/AdminDashboard";
 import ContactInfo from "./components/contact-info";
 import { ShootingStars } from "./components/ui/shooting-stars";
 import { StarsBackground } from "./components/ui/stars-background";
+import { AuthProvider } from "./contexts/AuthContext";
+import { ChatProvider } from "./contexts/ChatContext";
+import ProtectedRoute from "./components/ProtectedRoute";
+import AdminProtectedRoute from "./components/AdminProtectedRoute";
 
 import "./App.css";
 import LandingPage from "./pages/LandingPage";
@@ -26,10 +32,11 @@ import LandingPage from "./pages/LandingPage";
 function AppContent() {
 	const location = useLocation();
 	const isChatbotRoute = location.pathname === "/chatbot";
+	const isAdminRoute = location.pathname === "/admin";
 
 	return (
 		<div className="min-h-screen bg-[#0A0A0A]">
-			{!isChatbotRoute && (
+			{!isChatbotRoute && !isAdminRoute && (
 				<>
 					<header className="absolute top-0 left-0 w-full z-50">
 						<Navbar />
@@ -40,7 +47,22 @@ function AppContent() {
 							<Route path="/" element={<LandingPage />} />
 							<Route path="/signup" element={<Signup />} />
 							<Route path="/login" element={<Login />} />
-							<Route path="/chatbot" element={<Chatbot />} />
+							<Route 
+								path="/chatbot" 
+								element={
+									<ProtectedRoute>
+										<IntegratedChatbot />
+									</ProtectedRoute>
+								} 
+							/>
+							<Route 
+								path="/admin" 
+								element={
+									<AdminProtectedRoute>
+										<AdminDashboard />
+									</AdminProtectedRoute>
+								} 
+							/>
 							<Route
 								path="/contact"
 								element={
@@ -58,7 +80,26 @@ function AppContent() {
 			)}
 			{isChatbotRoute && (
 				<Routes>
-					<Route path="/chatbot" element={<Chatbot />} />
+					<Route 
+						path="/chatbot" 
+						element={
+							<ProtectedRoute>
+								<IntegratedChatbot />
+							</ProtectedRoute>
+						} 
+					/>
+				</Routes>
+			)}
+			{isAdminRoute && (
+				<Routes>
+					<Route 
+						path="/admin" 
+						element={
+							<AdminProtectedRoute>
+								<AdminDashboard />
+							</AdminProtectedRoute>
+						} 
+					/>
 				</Routes>
 			)}
 		</div>
@@ -67,9 +108,13 @@ function AppContent() {
 
 function App() {
 	return (
-		<Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-			<AppContent />
-		</Router>
+		<AuthProvider>
+			<ChatProvider>
+				<Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+					<AppContent />
+				</Router>
+			</ChatProvider>
+		</AuthProvider>
 	);
 }
 

@@ -2,14 +2,14 @@
 .cbp__container {
     display: flex;
     height: calc(100vh - 64px); /* adjust if you have a navbar/footer */
-    background: #121212;
+    background: #0a0a0a;
     color: #eee;
   }
   
   /* sidebar */
   .cbp__sidebar {
     width: 240px;
-    background: #1b1b1b;
+    background: #111111;
     padding: 12px;
     display: flex;
     flex-direction: column;
@@ -33,7 +33,7 @@
   }
   .cbp__item:hover,
   .cbp__item.active {
-    background: #272727;
+    background: #0f0f0f;
   }
   .cbp__new-chat {
     margin-top: auto;
@@ -52,6 +52,7 @@
     flex: 1;
     display: flex;
     flex-direction: column;
+    background: #0d0d0d;
   }
   
   /* header row */
@@ -61,7 +62,7 @@
     padding: 12px 16px;
   }
   .cbp__header-icon {
-    color: #888;
+    color: #777;
     font-size: 1rem;
   }
   .cbp__header-spacer {
@@ -71,7 +72,7 @@
     display: flex;
     align-items: center;
     font-size: 0.8rem;
-    color: #bbb;
+    color: #aaa;
   }
   .cbp__toggle span {
     margin-right: 6px;
@@ -92,7 +93,7 @@
     position: absolute;
     cursor: pointer;
     top: 0; left: 0; right: 0; bottom: 0;
-    background: #555;
+    background: #333;
     transition: 0.2s;
     border-radius: 16px;
   }
@@ -118,6 +119,7 @@
     text-align: center;
     flex: 1;
     overflow-y: auto;
+    background: #0b0b0b;
   }
   .cbp__greeting h2 {
     margin-bottom: 6px;
@@ -136,7 +138,7 @@
     margin-bottom: 16px;
   }
   .cbp__quick-actions button {
-    background: #272727;
+    background: #121212;
     border: none;
     padding: 12px;
     border-radius: 8px;
@@ -154,7 +156,7 @@
     color: #00d462;
   }
   .cbp__quick-actions button:hover {
-    background: #333;
+    background: #0f0f0f;
   }
   .cbp__tabs {
     display: flex;
@@ -173,7 +175,7 @@
   .cbp__tabs button.active,
   .cbp__tabs button:hover {
     color: #fff;
-    background: #272727;
+    background: #121212;
   }
   
   /* chat window */
@@ -181,6 +183,7 @@
     flex: 1;
     padding: 12px;
     overflow-y: auto;
+    background: #0a0a0a;
   }
   .cbp__message {
     max-width: 70%;
@@ -197,7 +200,7 @@
   }
   .cbp__message.bot {
     margin-right: auto;
-    background: #2a2a2a;
+    background: #121212;
     color: #fff;
   }
   
@@ -205,13 +208,13 @@
   .cbp__input-bar {
     display: flex;
     padding: 8px 12px;
-    background: #1f1f1f;
+    background: #0f0f0f;
     align-items: center;
   }
   .cbp__input-bar input {
     flex: 1;
     padding: 8px;
-    background: #2a2a2a;
+    background: #121212;
     border: none;
     border-radius: 6px;
     color: #ccc;

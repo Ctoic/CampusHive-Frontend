@@ -15,20 +15,20 @@ const Sidebar = ({ onNewChat }) => (
 			<div className="flex flex-col gap-4">
 				{/* Logo and Title */}
 				<div className="flex items-center gap-4">
-					<div className="w-10 h-10 bg-[#00d462] rounded-lg flex items-center justify-center">
+                    <div className="w-10 h-10 bg-[#60a5fa] rounded-lg flex items-center justify-center">
 						<FaRobot className="text-black text-sm" />
 					</div>
 					<div className="flex flex-col">
-						<h1 className="text-white text-lg font-semibold">
-							<span className="text-[#00d462]">Campus</span>Hive
+                        <h1 className="text-white text-lg font-semibold">
+                            <span className="text-[#60a5fa]">Campus</span>Hive
 						</h1>
 						<p className="text-gray-500 text-sm">AI Assistant</p>
 					</div>
 				</div>
 
 				{/* Clean New Chat Button */}
-				<button
-					className="w-full bg-[#00d462] hover:bg-[#00d462]/90 text-black text-sm font-medium py-3 px-4 rounded-lg transition-all duration-200 flex items-center justify-center gap-2"
+                <button
+                    className="w-full bg-[#60a5fa] hover:bg-[#60a5fa]/90 text-black text-sm font-medium py-3 px-4 rounded-lg transition-all duration-200 flex items-center justify-center gap-2"
 					onClick={onNewChat}>
 					<FaPlus className="text-xs" />
 					Start New Conversation
@@ -60,8 +60,8 @@ const Sidebar = ({ onNewChat }) => (
 							key={index}
 							className="w-full p-3 rounded-lg bg-[#1A1A1A] hover:bg-[#222222] transition-all duration-200 text-left group border border-gray-800/30 hover:border-gray-700/50">
 							<div className="flex items-center gap-3">
-								<div className="w-8 h-8 bg-[#00d462]/10 rounded-lg flex items-center justify-center">
-									<item.icon className="text-[#00d462] text-sm" />
+                            <div className="w-8 h-8 bg-[#60a5fa]/10 rounded-lg flex items-center justify-center">
+                                <item.icon className="text-[#60a5fa] text-sm" />
 								</div>
 								<div className="flex-1 min-w-0">
 									<p className="text-white text-sm font-medium">{item.label}</p>

@@ -1,17 +1,32 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { FaEye, FaEyeSlash, FaEnvelope, FaLock } from 'react-icons/fa6'
 import InteractiveBackground from './ui/interactive-background'
+import { useAuth } from '../contexts/AuthContext'
 import './Login.css'
 
 const Login = () => {
   const navigate = useNavigate()
+  const { login, loading, error, clearError, user } = useAuth()
   const [showPassword, setShowPassword] = useState(false)
   const [formData, setFormData] = useState({
-    email: '',
+    username: '',
     password: '',
     rememberMe: false
   })
+  const [loginSuccess, setLoginSuccess] = useState(false)
+
+  // Handle navigation after successful login
+  useEffect(() => {
+    if (loginSuccess && user) {
+      if (user.role === 'admin') {
+        navigate('/admin')
+      } else {
+        navigate('/chatbot')
+      }
+      setLoginSuccess(false)
+    }
+  }, [loginSuccess, user, navigate])
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target
@@ -21,10 +36,22 @@ const Login = () => {
     }))
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    console.log('Login attempted:', formData)
-    navigate('/chatbot')
+    clearError()
+    
+    try {
+      await login({
+        username: formData.username,
+        password: formData.password
+      })
+      
+      // Set login success flag to trigger navigation in useEffect
+      setLoginSuccess(true)
+    } catch (error) {
+      // Error is handled by the auth context
+      console.error('Login failed:', error)
+    }
   }
 
   const togglePasswordVisibility = () => {
@@ -38,7 +65,7 @@ const Login = () => {
       <div className="w-full max-w-md relative z-10">
         <div className="bg-[#111111]/80 backdrop-blur-sm border border-gray-700/50 rounded-2xl p-8 shadow-xl relative overflow-hidden">
           {/* Subtle gradient overlay */}
-          <div className="absolute inset-0 bg-gradient-to-br from-[#00d462]/5 to-transparent pointer-events-none"></div>
+          <div className="absolute inset-0 bg-gradient-to-br from-[#60a5fa]/5 to-transparent pointer-events-none"></div>
           
           <div className="relative z-10">
             {/* Header */}
@@ -47,26 +74,34 @@ const Login = () => {
               <p className="text-gray-400">Log in to your CampusHive account</p>
             </div>
 
+            {/* Error Message */}
+            {error && (
+              <div className="mb-4 p-3 bg-red-500/10 border border-red-500/20 rounded-lg">
+                <p className="text-red-400 text-sm">{error}</p>
+              </div>
+            )}
+
             {/* Form */}
             <form onSubmit={handleSubmit} className="space-y-6">
-              {/* Email Field */}
+              {/* Username Field */}
               <div className="space-y-2">
-                <label htmlFor="email" className="block text-sm font-medium text-gray-300">
-                  Email Address
+                <label htmlFor="username" className="block text-sm font-medium text-gray-300">
+                  Username
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                     <FaEnvelope className="h-4 w-4 text-gray-500" />
                   </div>
                   <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    value={formData.email}
+                    type="text"
+                    id="username"
+                    name="username"
+                    value={formData.username}
                     onChange={handleChange}
-                    className="w-full pl-10 pr-4 py-3 bg-[#1a1a1a] border border-gray-600 rounded-lg text-white placeholder-gray-500 focus:ring-2 focus:ring-[#00d462] focus:border-transparent transition-all duration-200"
-                    placeholder="Enter your email"
+                    className="w-full pl-10 pr-4 py-3 bg-[#1a1a1a] border border-gray-600 rounded-lg text-white placeholder-gray-500 focus:ring-2 focus:ring-[#60a5fa] focus:border-transparent transition-all duration-200"
+                    placeholder="Enter your username"
                     required
+                    disabled={loading}
                   />
                 </div>
               </div>
@@ -86,9 +121,10 @@ const Login = () => {
                     name="password"
                     value={formData.password}
                     onChange={handleChange}
-                    className="w-full pl-10 pr-12 py-3 bg-[#1a1a1a] border border-gray-600 rounded-lg text-white placeholder-gray-500 focus:ring-2 focus:ring-[#00d462] focus:border-transparent transition-all duration-200"
+                    className="w-full pl-10 pr-12 py-3 bg-[#1a1a1a] border border-gray-600 rounded-lg text-white placeholder-gray-500 focus:ring-2 focus:ring-[#60a5fa] focus:border-transparent transition-all duration-200"
                     placeholder="Enter your password"
                     required
+                    disabled={loading}
                   />
                   <button
                     type="button"
@@ -109,7 +145,7 @@ const Login = () => {
                     name="rememberMe"
                     checked={formData.rememberMe}
                     onChange={handleChange}
-                    className="h-4 w-4 text-[#00d462] focus:ring-[#00d462] border-gray-600 rounded bg-[#1a1a1a]"
+                    className="h-4 w-4 text-[#60a5fa] focus:ring-[#60a5fa] border-gray-600 rounded bg-[#1a1a1a]"
                   />
                   <label htmlFor="rememberMe" className="ml-2 text-sm text-gray-300">
                     Remember me
@@ -117,7 +153,7 @@ const Login = () => {
                 </div>
                 <a 
                   href="#" 
-                  className="text-sm text-[#00d462] hover:text-[#00d462]/80 transition-colors"
+                  className="text-sm text-[#60a5fa] hover:text-[#60a5fa]/80 transition-colors"
                 >
                   Forgot password?
                 </a>
@@ -126,9 +162,10 @@ const Login = () => {
               {/* Submit Button */}
               <button
                 type="submit"
-                className="w-full bg-[#00d462] hover:bg-[#00d462]/90 text-black font-semibold py-3 px-4 rounded-lg transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98] focus:ring-2 focus:ring-[#00d462] focus:ring-offset-2 focus:ring-offset-[#111111]"
+                disabled={loading}
+                className="w-full bg-[#60a5fa] hover:bg-[#60a5fa]/90 text-black font-semibold py-3 px-4 rounded-lg transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98] focus:ring-2 focus:ring-[#60a5fa] focus:ring-offset-2 focus:ring-offset-[#111111] disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
               >
-                Log In
+                {loading ? 'Logging in...' : 'Log In'}
               </button>
             </form>
 
@@ -138,7 +175,7 @@ const Login = () => {
                 Don't have an account?{' '}
                 <Link 
                   to="/signup" 
-                  className="text-[#00d462] hover:text-[#00d462]/80 font-medium transition-colors"
+                  className="text-[#60a5fa] hover:text-[#60a5fa]/80 font-medium transition-colors"
                 >
                   Sign up
                 </Link>

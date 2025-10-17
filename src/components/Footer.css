@@ -28,7 +28,7 @@
 }
 
 .footer__col a:hover {
-  color: #00d462;
+  color: #60a5fa;
 }
 
 .newsletter .footer__form {
@@ -47,8 +47,8 @@
 }
 
 .footer__form button {
-  background: #00d462;
-  color: #121212;
+  background: #60a5fa;
+  color: #0b1220;
   border: none;
   padding: 10px;
   border-radius: 4px;
@@ -58,11 +58,11 @@
 }
 
 .footer__form button:hover {
-  background: #19c85a;
+  background: #93c5fd;
 }
 
 .footer__thanks {
-  color: #00d462;
+  color: #60a5fa;
   margin-bottom: 12px;
 }
 
@@ -79,7 +79,7 @@
 }
 
 .footer__social a:hover {
-  color: #00d462;
+  color: #60a5fa;
   transform: translateY(-2px);
 }
 

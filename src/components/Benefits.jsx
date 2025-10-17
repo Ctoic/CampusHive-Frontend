@@ -168,8 +168,8 @@ export default function Benefits() {
 			className="relative pb-24 pt-24 md:pb-40 md:pt-40 w-full bg-[#0A0A0A]">
 			{/* Background decorative elements */}
 			<div className="absolute inset-0 -z-10">
-				<div className="absolute top-0 left-1/4 w-72 h-72 bg-[#00d462]/5 rounded-full blur-3xl"></div>
-				<div className="absolute bottom-0 right-1/4 w-96 h-96 bg-[#00d462]/5 rounded-full blur-3xl"></div>
+			<div className="absolute top-0 left-1/4 w-72 h-72 bg-[#60a5fa]/5 rounded-full blur-3xl"></div>
+			<div className="absolute bottom-0 right-1/4 w-96 h-96 bg-[#60a5fa]/5 rounded-full blur-3xl"></div>
 			</div>
 
 			{/* Main 5-column grid container */}
@@ -177,7 +177,7 @@ export default function Benefits() {
 				{/* Header Section - Takes 2 columns */}
 				<div className="lg:col-span-2 flex flex-col justify-start text-start space-y-8 lg:sticky lg:top-8 lg:self-start">
 					<div className="space-y-6">
-						<span className="inline-block px-4 py-2 text-sm font-medium text-[#00d462] bg-[#00d462]/10 rounded-full">
+					<span className="inline-block px-4 py-2 text-sm font-medium text-[#60a5fa] bg-[#60a5fa]/10 rounded-full">
 							BENEFITS
 						</span>
 						<h2 className="text-4xl font-bold lg:text-6xl xl:text-7xl tracking-tight text-white leading-tight">
@@ -191,9 +191,9 @@ export default function Benefits() {
 					</div>
 
 					{/* Decorative line */}
-					<div className="flex items-center gap-4 pt-6">
-						<div className="h-px bg-gradient-to-r from-[#00d462] to-transparent flex-1"></div>
-						<div className="w-2 h-2 rounded-full bg-[#00d462]"></div>
+				<div className="flex items-center gap-4 pt-6">
+					<div className="h-px bg-gradient-to-r from-[#60a5fa] to-transparent flex-1"></div>
+					<div className="w-2 h-2 rounded-full bg-[#60a5fa]"></div>
 					</div>
 				</div>
 
@@ -202,21 +202,21 @@ export default function Benefits() {
 					{benefitList.map(({ icon, title, description }, index) => (
 						<div
 							key={title}
-							className="group relative bg-[#111111] border border-gray-800/50 rounded-3xl overflow-hidden transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl hover:shadow-[#00d462]/10 hover:border-[#00d462]/30 p-8 lg:p-10 min-h-[360px] lg:min-h-[400px] flex flex-col">
+						className="group relative bg-[#111111] border border-gray-800/50 rounded-3xl overflow-hidden transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl hover:shadow-[#60a5fa]/10 hover:border-[#60a5fa]/30 p-8 lg:p-10 min-h-[360px] lg:min-h-[400px] flex flex-col">
 							{/* Card background gradient overlay */}
-							<div className="absolute inset-0 bg-gradient-to-br from-[#00d462]/5 via-transparent to-[#00d462]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+						<div className="absolute inset-0 bg-gradient-to-br from-[#60a5fa]/5 via-transparent to-[#60a5fa]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 
 							{/* Animated border */}
-							<div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-[#00d462]/20 via-[#00d462]/20 to-[#00d462]/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10 blur-sm"></div>
+						<div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-[#60a5fa]/20 via-[#60a5fa]/20 to-[#60a5fa]/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10 blur-sm"></div>
 
 							<div className="relative flex-1 flex flex-col">
 								<div className="flex justify-between items-start mb-6 lg:mb-8">
 									<div className="relative">
 										<div className="relative">
 											{/* Icon background glow */}
-											<div className="absolute inset-0 bg-[#00d462]/20 rounded-2xl blur-lg scale-150 opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
-											<div className="relative bg-[#0A0A0A] p-4 lg:p-5 rounded-2xl border border-[#00d462]/20 group-hover:border-[#00d462]/40 transition-all duration-300">
-												<div className="text-[#00d462] group-hover:scale-110 transition-transform duration-300">
+								<div className="absolute inset-0 bg-[#60a5fa]/20 rounded-2xl blur-lg scale-150 opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
+								<div className="relative bg-[#0A0A0A] p-4 lg:p-5 rounded-2xl border border-[#60a5fa]/20 group-hover:border-[#60a5fa]/40 transition-all duration-300">
+									<div className="text-[#60a5fa] group-hover:scale-110 transition-transform duration-300">
 													{icon}
 												</div>
 											</div>
@@ -224,13 +224,13 @@ export default function Benefits() {
 									</div>
 
 									{/* Animated number */}
-									<span className="text-6xl lg:text-7xl xl:text-8xl font-bold text-gray-800/40 group-hover:text-[#00d462]/20 transition-all duration-500 group-hover:scale-110 leading-none">
+						<span className="text-6xl lg:text-7xl xl:text-8xl font-bold text-gray-800/40 group-hover:text-[#60a5fa]/20 transition-all duration-500 group-hover:scale-110 leading-none">
 										0{index + 1}
 									</span>
 								</div>
 
 								<div className="flex-1 flex flex-col justify-between">
-									<h3 className="text-xl lg:text-2xl font-bold mb-4 lg:mb-6 text-white group-hover:text-[#00d462] transition-colors duration-300 leading-tight">
+						<h3 className="text-xl lg:text-2xl font-bold mb-4 lg:mb-6 text-white group-hover:text-[#60a5fa] transition-colors duration-300 leading-tight">
 										{title}
 									</h3>
 
@@ -240,7 +240,7 @@ export default function Benefits() {
 										</p>
 
 										{/* Bottom accent line */}
-										<div className="h-1 bg-gradient-to-r from-[#00d462]/0 via-[#00d462]/50 to-[#00d462]/0 rounded-full transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-center"></div>
+						<div className="h-1 bg-gradient-to-r from-[#60a5fa]/0 via-[#60a5fa]/50 to-[#60a5fa]/0 rounded-full transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-center"></div>
 									</div>
 								</div>
 							</div>
@@ -252,11 +252,11 @@ export default function Benefits() {
 			{/* Bottom decorative element */}
 			<div className="flex justify-center mt-16 lg:mt-20 px-4">
 				<div className="flex items-center gap-3">
-					<div className="w-3 h-3 rounded-full bg-[#00d462] animate-pulse"></div>
-					<div className="w-12 h-px bg-gradient-to-r from-[#00d462] to-transparent"></div>
-					<div className="w-3 h-3 rounded-full bg-[#00d462]/60 animate-pulse delay-300"></div>
-					<div className="w-12 h-px bg-gradient-to-r from-[#00d462]/60 to-transparent"></div>
-					<div className="w-3 h-3 rounded-full bg-[#00d462]/30 animate-pulse delay-700"></div>
+					<div className="w-3 h-3 rounded-full bg-[#60a5fa] animate-pulse"></div>
+					<div className="w-12 h-px bg-gradient-to-r from-[#60a5fa] to-transparent"></div>
+					<div className="w-3 h-3 rounded-full bg-[#60a5fa]/60 animate-pulse delay-300"></div>
+					<div className="w-12 h-px bg-gradient-to-r from-[#60a5fa]/60 to-transparent"></div>
+					<div className="w-3 h-3 rounded-full bg-[#60a5fa]/30 animate-pulse delay-700"></div>
 				</div>
 			</div>
 		</section>

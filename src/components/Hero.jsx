@@ -161,11 +161,11 @@ const Hero = () => {
 			{/* Background Elements */}
 			<div className="absolute inset-0 z-[1]">
 				{/* Gradient Mesh */}
-				<div className="absolute inset-0 bg-gradient-to-br from-[#00d462]/20 via-transparent to-[#00d462]/10 opacity-50"></div>
+				<div className="absolute inset-0 bg-gradient-to-br from-[#60a5fa]/20 via-transparent to-[#60a5fa]/10 opacity-50"></div>
 
 				{/* Animated Shapes */}
-				<div className="absolute top-1/4 -left-10 w-80 h-80 rounded-full bg-gradient-to-br from-[#00d462]/30 to-[#00b454]/30 blur-[80px] animate-[float_12s_ease-in-out_infinite]"></div>
-				<div className="absolute bottom-1/4 -right-10 w-80 h-80 rounded-full bg-gradient-to-br from-[#00d462]/20 to-[#009646]/30 blur-[80px] animate-[float_12s_ease-in-out_infinite] animation-delay-[-6s]"></div>
+				<div className="absolute top-1/4 -left-10 w-80 h-80 rounded-full bg-gradient-to-br from-[#60a5fa]/30 to-[#3b82f6]/30 blur-[80px] animate-[float_12s_ease-in-out_infinite]"></div>
+				<div className="absolute bottom-1/4 -right-10 w-80 h-80 rounded-full bg-gradient-to-br from-[#60a5fa]/20 to-[#3b82f6]/30 blur-[80px] animate-[float_12s_ease-in-out_infinite] animation-delay-[-6s]"></div>
 			</div>
 
 			{/* Content Container */}
@@ -183,7 +183,7 @@ const Hero = () => {
 									: "opacity-0 translate-y-5"
 							}`}>
 							<div className="inline-flex items-center px-4 py-3 border border-white/10 rounded-full bg-white/5 backdrop-blur-2xl transform-origin-left transition-transform duration-300 hover:scale-105">
-								<div className="w-2 h-2 rounded-full bg-[#00d462] animate-pulse"></div>
+							<div className="w-2 h-2 rounded-full bg-[#60a5fa] animate-pulse"></div>
 								<span className="ml-2 text-xs text-white/70 tracking-widest font-medium uppercase">
 									SMART CAMPUS SOLUTION
 								</span>
@@ -199,7 +199,7 @@ const Hero = () => {
 									: "opacity-0 translate-y-5"
 							}`}>
 							<h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-[1.1] m-0">
-								<span className="inline-block bg-gradient-to-r from-[#00d462] via-[#00b052] to-[#00d462] bg-[length:200%_auto] bg-clip-text text-transparent animate-[gradient_8s_linear_infinite]">
+							<span className="inline-block bg-gradient-to-r from-[#60a5fa] via-[#3b82f6] to-[#60a5fa] bg-[length:200%_auto] bg-clip-text text-transparent animate-[gradient_8s_linear_infinite]">
 									CampusHive
 								</span>
 								<span className="block mt-2 text-gray-200 text-2xl sm:text-3xl lg:text-4xl">
@@ -232,13 +232,13 @@ const Hero = () => {
 							<RouterLink to="/signup" className="w-full sm:w-auto">
 								<button className="group relative px-6 py-3 min-w-[160px] w-full sm:w-auto border-none rounded-lg cursor-pointer overflow-hidden bg-transparent transition-transform duration-300 hover:-translate-y-0.5">
 									{/* Background */}
-									<div className="absolute inset-0 bg-gradient-to-r from-[#00d462] to-[#00b052] rounded-inherit"></div>
+								<div className="absolute inset-0 bg-gradient-to-r from-[#60a5fa] to-[#3b82f6] rounded-inherit"></div>
 
 									{/* Glow Effect */}
-									<div className="absolute inset-0 bg-gradient-to-r from-[#00d462] to-[#00b052] rounded-inherit blur-3xl opacity-0 transition-opacity duration-500 group-hover:opacity-60"></div>
+								<div className="absolute inset-0 bg-gradient-to-r from-[#60a5fa] to-[#3b82f6] rounded-inherit blur-3xl opacity-0 transition-opacity duration-500 group-hover:opacity-60"></div>
 
 									{/* Content */}
-									<div className="relative flex items-center justify-center gap-2 text-[#121212] font-semibold z-10">
+							<div className="relative flex items-center justify-center gap-2 text-[#0b1220] font-semibold z-10">
 										<span>Get Started</span>
 										<svg
 											className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1"
@@ -256,7 +256,7 @@ const Hero = () => {
 								</button>
 							</RouterLink>
 
-							<button className="px-6 py-3 min-w-[160px] w-full sm:w-auto rounded-lg border border-white/10 bg-white/5 backdrop-blur-2xl text-white/70 cursor-pointer transition-all duration-300 hover:bg-white/10 hover:text-white hover:border-[#00d462]/30">
+							<button className="px-6 py-3 min-w[160px] w-full sm:w-auto rounded-lg border border-white/10 bg-white/5 backdrop-blur-2xl text-white/70 cursor-pointer transition-all duration-300 hover:bg-white/10 hover:text-white hover:border-[#60a5fa]/30">
 								Learn More
 							</button>
 						</div>
@@ -282,14 +282,14 @@ const Hero = () => {
 										className="w-full h-full object-cover rounded-inherit transition-transform duration-500 brightness-[0.8] contrast-[1.1] group-hover:scale-105 group-hover:brightness-[0.9] group-hover:contrast-[1.2]"
 										loading="eager"
 									/>
-									<div className="absolute inset-0 bg-gradient-to-br from-[#00d462]/20 via-[#00b454]/10 to-[#009646]/20 mix-blend-overlay pointer-events-none"></div>
+								<div className="absolute inset-0 bg-gradient-to-br from-[#60a5fa]/20 via-[#3b82f6]/10 to-[#60a5fa]/20 mix-blend-overlay pointer-events-none"></div>
 								</div>
 
 								{/* Floating Elements */}
 								<div className="absolute inset-6 flex flex-col justify-between p-6 z-10 pointer-events-none">
 									{/* Top Group */}
 									<div className="flex flex-col items-start gap-3">
-										<div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#00d462] to-[#00b052] animate-pulse"></div>
+									<div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#60a5fa] to-[#3b82f6] animate-pulse"></div>
 										<div className="h-0.5 w-24 bg-white/20 rounded-full"></div>
 										<div className="h-0.5 w-32 bg-white/20 rounded-full"></div>
 									</div>
@@ -297,10 +297,10 @@ const Hero = () => {
 									{/* Middle Group */}
 									<div className="flex justify-between items-center">
 										<div className="flex flex-col gap-2">
-											<div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#00d462]/20 to-[#00b454]/20"></div>
+									<div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#60a5fa]/20 to-[#3b82f6]/20"></div>
 											<div className="w-16 h-0.5 bg-white/20 rounded-full"></div>
 										</div>
-										<div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#00d462]/30 to-[#00b454]/30 animate-[float_12s_ease-in-out_infinite]"></div>
+									<div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#60a5fa]/30 to-[#3b82f6]/30 animate-[float_12s_ease-in-out_infinite]"></div>
 									</div>
 
 									{/* Bottom Group */}

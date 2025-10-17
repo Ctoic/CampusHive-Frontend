@@ -231,12 +231,6 @@ export const BlurImage = ({
 
 export const features = [
   {
-    category: "Student Assistant",
-    title: "Academic Information",
-    content: "Get instant access to comprehensive information about degree programs, course schedules, faculty profiles, and university policies. Our chatbot provides detailed insights into academic requirements, course prerequisites, and program structures.",
-    src: "/images/student-info.jpg"
-  },
-  {
     category: "Faculty Support",
     title: "Daily Operations",
     content: "Streamline your daily academic tasks with our intelligent assistant. Make class announcements, manage your schedule, create and grade assessments, and ensure course outline compliance with CLOs and PLOs.",

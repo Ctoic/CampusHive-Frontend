@@ -89,12 +89,12 @@ const Team = () => {
       <div className="container mx-auto px-4">
         {/* Background decorative elements */}
         <div className="absolute inset-0 -z-10">
-          <div className="absolute top-0 left-1/4 w-72 h-72 bg-[#00d462]/5 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-[#00d462]/5 rounded-full blur-3xl"></div>
+          <div className="absolute top-0 left-1/4 w-72 h-72 bg-[#60a5fa]/5 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-[#60a5fa]/5 rounded-full blur-3xl"></div>
         </div>
 
         <div className="text-center space-y-4 pb-16 max-w-4xl mx-auto">
-          <span className="inline-block px-3 py-1 text-sm font-medium text-[#00d462] bg-[#00d462]/10 rounded-full">
+          <span className="inline-block px-3 py-1 text-sm font-medium text-[#60a5fa] bg-[#60a5fa]/10 rounded-full">
             TEAM
           </span>
           <h2 className="text-4xl font-bold sm:text-6xl tracking-tight text-white">
@@ -112,7 +112,7 @@ const Team = () => {
             {teamList.map(({ imageUrl, firstName, lastName, positions, socialNetworks }, index) => (
               <div
                 key={index}
-                className="group relative bg-[#111111] border border-gray-700/50 rounded-xl overflow-hidden transition-all duration-500 hover:shadow-xl hover:shadow-[#00d462]/20 hover:-translate-y-1 hover:border-[#00d462]/30"
+                className="group relative bg-[#111111] border border-gray-700/50 rounded-xl overflow-hidden transition-all duration-500 hover:shadow-xl hover:shadow-[#60a5fa]/20 hover:-translate-y-1 hover:border-[#60a5fa]/30"
               >
                 <div className="h-64 overflow-hidden">
                   <img
@@ -125,7 +125,7 @@ const Team = () => {
                 <div className="p-6 bg-[#111111] relative z-10">
                   <h3 className="text-xl font-bold mb-2">
                     <span className="text-white">{firstName}</span>
-                    <span className="text-[#00d462] ml-2">{lastName}</span>
+                    <span className="text-[#60a5fa] ml-2">{lastName}</span>
                   </h3>
                   
                   <div className="mb-4">
@@ -143,7 +143,7 @@ const Team = () => {
                         href={url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-gray-400 hover:text-[#00d462] transition-colors duration-300 hover:scale-110 transform"
+                        className="text-gray-400 hover:text-[#60a5fa] transition-colors duration-300 hover:scale-110 transform"
                         aria-label={`${firstName}'s ${name}`}
                       >
                         {icon}

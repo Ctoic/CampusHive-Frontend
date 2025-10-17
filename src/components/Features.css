@@ -67,7 +67,7 @@
 }
 .e-card:hover {
   transform: scale(1.05);
-  box-shadow: 0 8px 20px rgba(0, 212, 98, 0.3);
+  box-shadow: 0 8px 20px rgba(96, 165, 250, 0.3);
 }
 .e-card .wave {
   position: absolute;
@@ -78,7 +78,7 @@
   top: 0;
   margin-left: -50%;
   margin-top: -70%;
-  background: linear-gradient(744deg, #00d462, #1b1b1b 60%, #00d462);
+  background: linear-gradient(744deg, #60a5fa, #1b1b1b 60%, #60a5fa);
   border-radius: 40%;
   animation: wave 3000ms infinite linear;
   z-index: 1;
@@ -98,7 +98,7 @@
   width: 4rem;
   margin-top: -1rem;
   padding-bottom: 1rem;
-  color: #00d462;
+  color: #60a5fa;
   font-size: 3rem;
   transition: transform 0.3s ease;
   display: flex;
@@ -164,7 +164,7 @@
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  background: rgba(0, 212, 98, 0.3);
+  background: rgba(96, 165, 250, 0.3);
   pointer-events: none;
   transform: translate(-50%, -50%);
   transition: transform 0.2s ease, opacity 0.3s ease;
@@ -173,7 +173,7 @@
 }
 .custom-cursor.active {
   transform: translate(-50%, -50%) scale(1.5);
-  background: rgba(0, 212, 98, 0.5);
+  background: rgba(96, 165, 250, 0.5);
   opacity: 1;
 }
 
@@ -197,15 +197,15 @@
 }
 .btn-secondary {
   background: transparent;
-  border: 2px solid #00d462;
-  color: #00d462;
+  border: 2px solid #60a5fa;
+  color: #60a5fa;
 }
 .btn-secondary:hover {
-  background: #00d462;
+  background: #60a5fa;
   color: #121212;
 }
 .btn-primary {
-  background: #00d462;
+  background: #60a5fa;
   border: none;
   color: #121212;
 }
@@ -224,9 +224,9 @@
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background: rgba(0, 212, 98, 0.2);
-  border: 2px solid #00d462;
-  color: #00d462;
+  background: rgba(96, 165, 250, 0.2);
+  border: 2px solid #60a5fa;
+  color: #60a5fa;
   width: 48px;
   height: 48px;
   border-radius: 50%;
@@ -241,7 +241,7 @@
 }
 
 .nav-button:hover {
-  background: #00d462;
+  background: #60a5fa;
   color: #121212;
   transform: translateY(-50%) scale(1.1);
 }

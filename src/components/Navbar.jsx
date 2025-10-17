@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
 import { Link as ScrollLink, animateScroll } from "react-scroll";
-import { Link as RouterLink, useLocation } from "react-router-dom";
-import { FaBars, FaTimes } from "react-icons/fa";
+import { Link as RouterLink, useLocation, useNavigate } from "react-router-dom";
+import { FaBars, FaTimes, FaUser, FaSignOutAlt, FaCog } from "react-icons/fa";
+import { useAuth } from "../contexts/AuthContext";
+import logo from "../assets/logo.png";
 import "./Navbar.css";
 
 const NAV_HEIGHT = 64;
@@ -10,11 +12,19 @@ const Navbar = () => {
 	const [menuOpen, setMenuOpen] = useState(false);
 	const [scrolled, setScrolled] = useState(false);
 	const location = useLocation();
+	const navigate = useNavigate();
+	const { user, isAuthenticated, logout } = useAuth();
 
 	const toggleMenu = () => setMenuOpen((o) => !o);
 	const closeMenu = () => setMenuOpen(false);
 	const scrollToTop = () => {
 		animateScroll.scrollToTop({ duration: 400 });
+		closeMenu();
+	};
+
+	const handleLogout = async () => {
+		await logout();
+		navigate("/");
 		closeMenu();
 	};
 
@@ -41,8 +51,9 @@ const Navbar = () => {
 				<div className="container navbar-container">
 					<div className="logo" onClick={scrollToTop}>
 						<RouterLink to="/">
-							<span className="campus">Campus</span>
-							<span className="hive">Hive</span>
+							<img src={logo} alt="CampusHive logo" className="logo-img" />
+							<span className="campus">campus</span>
+							<span className="hive">hive</span>
 						</RouterLink>
 					</div>
 
@@ -51,7 +62,7 @@ const Navbar = () => {
 							{isHome ? (
 								navItems.map((item) => (
 									<li key={item.id}>
-										<ScrollLink
+							<ScrollLink
 											to={item.id}
 											spy={true}
 											smooth={true}
@@ -59,7 +70,7 @@ const Navbar = () => {
 											duration={500}
 											activeClass="active"
 											onClick={closeMenu}
-											className="hover:text-[#00d462] transition-colors duration-300">
+								className="hover:text-[#60a5fa] transition-colors duration-300">
 											{item.label}
 										</ScrollLink>
 									</li>
@@ -70,7 +81,7 @@ const Navbar = () => {
 										<RouterLink
 											to="/"
 											onClick={closeMenu}
-											className="hover:text-[#00d462] transition-colors duration-300">
+								className="hover:text-[#60a5fa] transition-colors duration-300">
 											Home
 										</RouterLink>
 									</li>
@@ -79,21 +90,67 @@ const Navbar = () => {
 											<RouterLink
 												to={`/#${item.id}`}
 												onClick={closeMenu}
-												className="hover:text-[#00d462] transition-colors duration-300">
+								className="hover:text-[#60a5fa] transition-colors duration-300">
 												{item.label}
 											</RouterLink>
 										</li>
 									))}
 								</>
 							)}
-							<li>
-								<RouterLink
-									to="/chatbot"
-									onClick={closeMenu}
-									className="contact-btn">
-									Demo
-								</RouterLink>
-							</li>
+							{isAuthenticated ? (
+								<>
+									<li>
+										<RouterLink
+											to="/chatbot"
+											onClick={closeMenu}
+											className="contact-btn">
+											Chat
+										</RouterLink>
+									</li>
+									{user?.role === 'admin' && (
+										<li>
+											<RouterLink
+												to="/admin"
+												onClick={closeMenu}
+								className="flex items-center gap-2 text-sm hover:text-[#60a5fa] transition-colors duration-300">
+												<FaCog />
+												Admin
+											</RouterLink>
+										</li>
+									)}
+									<li className="flex items-center gap-2">
+										<FaUser className="text-sm" />
+										<span className="text-sm">{user?.username}</span>
+									</li>
+									<li>
+										<button
+											onClick={handleLogout}
+								className="flex items-center gap-2 text-sm hover:text-[#60a5fa] transition-colors duration-300">
+											<FaSignOutAlt />
+											Logout
+										</button>
+									</li>
+								</>
+							) : (
+								<>
+									<li>
+										<RouterLink
+											to="/login"
+											onClick={closeMenu}
+								className="hover:text-[#60a5fa] transition-colors duration-300">
+											Login
+										</RouterLink>
+									</li>
+									<li>
+										<RouterLink
+											to="/signup"
+											onClick={closeMenu}
+											className="contact-btn">
+											Sign Up
+										</RouterLink>
+									</li>
+								</>
+							)}
 						</ul>
 					</div>
 

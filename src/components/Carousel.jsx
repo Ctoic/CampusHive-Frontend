@@ -4,7 +4,7 @@ import { FaArrowLeft, FaArrowRight, FaPlus } from 'react-icons/fa';
 const NavigationButtons = ({ currentIndex, maxIndex, handlePrev, handleNext }) => (
   <div className="mt-6 pl-2 flex justify-start gap-4">
     <button
-      className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00d462] focus-visible:ring-offset-2 disabled:pointer-events-none h-12 w-12 rounded-full disabled:opacity-50 bg-[#00d462] text-white shadow-md hover:shadow-[#00d462]/30 hover:scale-105 active:scale-95"
+      className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#60a5fa] focus-visible:ring-offset-2 disabled:pointer-events-none h-12 w-12 rounded-full disabled:opacity-50 bg-[#60a5fa] text-white shadow-md hover:shadow-[#60a5fa]/30 hover:scale-105 active:scale-95"
       disabled={currentIndex === 0}
       onClick={handlePrev}
       aria-label="Previous slide"
@@ -14,7 +14,7 @@ const NavigationButtons = ({ currentIndex, maxIndex, handlePrev, handleNext }) =
     </button>
 
     <button
-      className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00d462] focus-visible:ring-offset-2 disabled:pointer-events-none h-12 w-12 rounded-full disabled:opacity-50 bg-[#00d462] text-white shadow-md hover:shadow-[#00d462]/30 hover:scale-105 active:scale-95"
+      className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#60a5fa] focus-visible:ring-offset-2 disabled:pointer-events-none h-12 w-12 rounded-full disabled:opacity-50 bg-[#60a5fa] text-white shadow-md hover:shadow-[#60a5fa]/30 hover:scale-105 active:scale-95"
       disabled={currentIndex >= maxIndex}
       onClick={handleNext}
       aria-label="Next slide"
@@ -26,7 +26,7 @@ const NavigationButtons = ({ currentIndex, maxIndex, handlePrev, handleNext }) =
 );
 
 const CarouselItem = ({ item, onPlusClick }) => (
-  <div className="group relative flex flex-col overflow-hidden rounded-xl text-white transition-all duration-500 hover:shadow-xl hover:shadow-[#00d462]/10 hover:-translate-y-1 bg-[#111111] border border-gray-800/50 h-full">
+  <div className="group relative flex flex-col overflow-hidden rounded-xl text-white transition-all duration-500 hover:shadow-xl hover:shadow-[#60a5fa]/10 hover:-translate-y-1 bg-[#111111] border border-gray-800/50 h-full">
     <div className="relative flex transition-opacity duration-500 opacity-100 min-h-[300px] items-end overflow-hidden">
       <img
         alt={item.title}
@@ -37,11 +37,11 @@ const CarouselItem = ({ item, onPlusClick }) => (
         className="h-full max-h-[300px] w-full origin-center object-cover transition-all duration-700 ease-out scale-105 group-hover:scale-110 filter brightness-90 group-hover:brightness-100"
         src={item.imageSrc}
       />
-      <div className="absolute inset-0 h-1/3 bg-gradient-to-b from-[#00d462]/20 to-transparent pointer-events-none"></div>
+      <div className="absolute inset-0 h-1/3 bg-gradient-to-b from-[#60a5fa]/20 to-transparent pointer-events-none"></div>
     </div>
 
     <button
-      className="absolute bottom-6 right-6 z-10 block rounded-full bg-[#00d462] p-4 shadow-lg shadow-[#00d462]/20 transition-all duration-300 hover:scale-110 hover:shadow-[#00d462]/30"
+      className="absolute bottom-6 right-6 z-10 block rounded-full bg-[#60a5fa] p-4 shadow-lg shadow-[#60a5fa]/20 transition-all duration-300 hover:scale-110 hover:shadow-[#60a5fa]/30"
       onClick={(e) => onPlusClick(e, item)}
       aria-label="Open details"
     >
@@ -49,7 +49,7 @@ const CarouselItem = ({ item, onPlusClick }) => (
     </button>
 
     <div className="flex flex-col gap-2 p-6">
-      <p className="text-balance text-sm text-[#00d462] font-medium tracking-wider uppercase">
+      <p className="text-balance text-sm text-[#60a5fa] font-medium tracking-wider uppercase">
         {item.category}
       </p>
       <h3 className="text-lg font-semibold tracking-tight text-balance text-white">
@@ -82,12 +82,12 @@ const DetailDialog = ({ isOpen, onOpenChange, selectedItem }) => {
                 alt={selectedItem.title}
                 className="w-full h-full object-cover"
               />
-              <div className="absolute inset-0 bg-gradient-to-br from-[#00d462]/20 via-[#00d462]/10 to-transparent"></div>
+              <div className="absolute inset-0 bg-gradient-to-br from-[#60a5fa]/20 via-[#60a5fa]/10 to-transparent"></div>
             </div>
 
             <div className="p-6 md:p-8 w-full md:w-1/2 flex flex-col justify-between">
               <div>
-                <p className="text-sm text-[#00d462] font-medium tracking-wider uppercase mb-2">
+                <p className="text-sm text-[#60a5fa] font-medium tracking-wider uppercase mb-2">
                   {selectedItem.category}
                 </p>
                 <h3 className="text-2xl font-bold mb-4 text-white">{selectedItem.title}</h3>
@@ -97,7 +97,7 @@ const DetailDialog = ({ isOpen, onOpenChange, selectedItem }) => {
               </div>
 
               <div className="flex justify-between items-center mt-8">
-                <button className="px-4 py-2 bg-[#00d462] text-white rounded-lg shadow-md hover:shadow-[#00d462]/20 transition-all duration-300 hover:scale-105">
+                <button className="px-4 py-2 bg-[#60a5fa] text-white rounded-lg shadow-md hover:shadow-[#60a5fa]/20 transition-all duration-300 hover:scale-105">
                   View Details
                 </button>
               </div>
@@ -207,12 +207,12 @@ export default function Carousel() {
       <div className="container mx-auto px-4">
         {/* Background decorative elements */}
         <div className="absolute inset-0 -z-10">
-          <div className="absolute top-0 left-1/4 w-72 h-72 bg-[#00d462]/5 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-[#00d462]/5 rounded-full blur-3xl"></div>
+          <div className="absolute top-0 left-1/4 w-72 h-72 bg-[#60a5fa]/5 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-[#60a5fa]/5 rounded-full blur-3xl"></div>
         </div>
 
         <div className="space-y-4 pb-16 max-w-4xl text-start">
-          <span className="inline-block px-3 py-1 text-sm font-medium text-[#00d462] bg-[#00d462]/10 rounded-full">
+          <span className="inline-block px-3 py-1 text-sm font-medium text-[#60a5fa] bg-[#60a5fa]/10 rounded-full">
             FEATURES
           </span>
           <h2 className="text-4xl font-bold sm:text-6xl tracking-tight text-white">
