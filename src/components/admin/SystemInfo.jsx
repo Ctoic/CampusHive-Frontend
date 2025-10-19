@@ -60,7 +60,7 @@ const SystemInfo = ({ systemStats }) => {
   const getHealthIcon = (status) => {
     switch (status) {
       case 'healthy':
-        return <CheckCircle className="h-5 w-5 text-[#60a5fa]" />;
+        return <CheckCircle className="h-5 w-5 text-gray-300" />;
       case 'degraded':
         return <AlertCircle className="h-5 w-5 text-yellow-500" />;
       default:
@@ -71,7 +71,7 @@ const SystemInfo = ({ systemStats }) => {
   const getHealthColor = (status) => {
     switch (status) {
       case 'healthy':
-        return 'bg-[#60a5fa]/20 text-[#60a5fa] border-[#60a5fa]/30';
+        return 'bg-white/10 text-white border-white/10';
       case 'degraded':
         return 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30';
       default:
@@ -322,7 +322,7 @@ const SystemInfo = ({ systemStats }) => {
             </div>
             <div className="flex justify-between">
               <span className="text-gray-400">System Status:</span>
-              <Badge className="bg-[#60a5fa]/20 text-[#60a5fa] border-[#60a5fa]/30">
+              <Badge className="bg-white/10 text-white border-white/10">
                 Operational
               </Badge>
             </div>

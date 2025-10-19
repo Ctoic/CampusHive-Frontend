@@ -6,6 +6,14 @@ import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 import { Checkbox } from '../ui/checkbox';
 import { 
+  Table, 
+  TableBody, 
+  TableCell, 
+  TableHead, 
+  TableHeader, 
+  TableRow 
+} from '../ui/table';
+import { 
   Database, 
   Plus, 
   Trash2, 
@@ -56,7 +64,9 @@ const VectorStoresManagement = () => {
     try {
       setLoading(true);
       setError(null);
+      console.log('Loading vector stores...');
       const data = await apiClient.getVectorStores();
+      console.log('Vector stores data received:', data);
       setStores(data);
     } catch (err) {
       console.error('Failed to load vector stores:', err);
@@ -197,10 +207,15 @@ const VectorStoresManagement = () => {
         <div className="flex gap-2">
           <Button 
             onClick={loadVectorStores}
+            disabled={loading}
             variant="outline"
             className="border-transparent text-gray-300 hover:text-white hover:bg-white/10"
           >
-            <RefreshCw className="h-4 w-4 mr-2" />
+            {loading ? (
+              <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+            ) : (
+              <RefreshCw className="h-4 w-4 mr-2" />
+            )}
             Refresh
           </Button>
           <Button 
@@ -219,10 +234,10 @@ const VectorStoresManagement = () => {
       </div>
 
       {/* Batch Operations */}
-      <Card className="bg-gray-900 border-gray-800">
+      <Card className="bg-[#0F0F0F] border-white/10">
         <CardHeader>
           <CardTitle className="text-white">Batch Operations</CardTitle>
-          <CardDescription className="text-gray-400">
+          <CardDescription className="text-white">
             Perform operations on multiple stores at once
           </CardDescription>
         </CardHeader>
@@ -280,153 +295,157 @@ const VectorStoresManagement = () => {
         </CardContent>
       </Card>
 
-      {/* Vector Stores Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {Object.entries(stores).map(([storeType, storeInfo]) => (
-          <Card key={storeType} className="bg-gray-900 border-gray-800">
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-2">
-                  <Database className="h-5 w-5 text-white" />
-                  <CardTitle className="text-white capitalize">{storeType}</CardTitle>
-                </div>
-                {getStatusIcon(storeInfo.exists, storeInfo.data_source_exists)}
-              </div>
-              <CardDescription className="text-gray-400">
-                {getStatusBadge(storeInfo.exists, storeInfo.data_source_exists)}
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="space-y-2 text-sm">
-                <div className="flex justify-between">
-                  <span className="text-gray-400">Documents:</span>
-                  <span className="text-white">
-                    {storeInfo.document_count || 'N/A'}
-                  </span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-400">Store Exists:</span>
-                  <span className="text-white">
-                    {storeInfo.exists ? 'Yes' : 'No'}
-                  </span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-400">Data Source:</span>
-                  <span className="text-white">
-                    {storeInfo.data_source_exists ? 'Yes' : 'No'}
-                  </span>
-                </div>
-              </div>
+      {/* Vector Stores Table */}
+      <Card className="bg-[#0F0F0F] border-white/10">
+        <CardHeader>
+          <CardTitle className="text-white">Stores</CardTitle>
+          <CardDescription className="text-white">Overview and actions</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="rounded-lg border border-white/10 overflow-hidden">
+            <Table>
+              <TableHeader>
+                <TableRow className="hover:bg-transparent">
+                  <TableHead className="text-white">Store</TableHead>
+                  <TableHead className="text-white">Documents</TableHead>
+                  <TableHead className="text-white">Exists</TableHead>
+                  <TableHead className="text-white">Data Source</TableHead>
+                  <TableHead className="text-white">Status</TableHead>
+                  <TableHead className="text-white text-right">Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {Object.entries(stores).map(([storeType, storeInfo]) => (
+                  <TableRow key={storeType} className="hover:bg-white/5">
+                    <TableCell>
+                      <div className="flex items-center gap-2">
+                        {getStatusIcon(storeInfo.exists, storeInfo.data_source_exists)}
+                        <span className="text-white capitalize">{storeType}</span>
+                      </div>
+                    </TableCell>
+                    <TableCell className="text-white">{storeInfo.document_count || 'N/A'}</TableCell>
+                    <TableCell className="text-white">{storeInfo.exists ? 'Yes' : 'No'}</TableCell>
+                    <TableCell className="text-white">{storeInfo.data_source_exists ? 'Yes' : 'No'}</TableCell>
+                    <TableCell>
+                      {getStatusBadge(storeInfo.exists, storeInfo.data_source_exists)}
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <div className="flex justify-end gap-2">
+                        <Button
+                          size="sm"
+                          onClick={() => handleStoreOperation(storeType, 'create')}
+                          disabled={operationLoading[`${storeType}-create`]}
+                          className="bg-black/30 hover:bg-black/40 text-white"
+                          title="Create"
+                        >
+                          {operationLoading[`${storeType}-create`] ? (
+                            <Loader2 className="h-3 w-3 animate-spin" />
+                          ) : (
+                            <Plus className="h-3 w-3" />
+                          )}
+                        </Button>
 
-              <div className="flex flex-wrap gap-2">
-                <Button
-                  size="sm"
-                  onClick={() => handleStoreOperation(storeType, 'create')}
-                  disabled={operationLoading[`${storeType}-create`]}
-                  className="bg-black/30 hover:bg-black/40 text-white"
-                >
-                  {operationLoading[`${storeType}-create`] ? (
-                    <Loader2 className="h-3 w-3 animate-spin" />
-                  ) : (
-                    <Plus className="h-3 w-3" />
-                  )}
-                </Button>
-                
-                <Button
-                  size="sm"
-                  onClick={() => handleStoreOperation(storeType, 'rebuild')}
-                  disabled={operationLoading[`${storeType}-rebuild`]}
-                  className="bg-black/30 hover:bg-black/40 text-white"
-                >
-                  {operationLoading[`${storeType}-rebuild`] ? (
-                    <Loader2 className="h-3 w-3 animate-spin" />
-                  ) : (
-                    <RefreshCw className="h-3 w-3" />
-                  )}
-                </Button>
+                        <Button
+                          size="sm"
+                          onClick={() => handleStoreOperation(storeType, 'rebuild')}
+                          disabled={operationLoading[`${storeType}-rebuild`]}
+                          className="bg-black/30 hover:bg-black/40 text-white"
+                          title="Rebuild"
+                        >
+                          {operationLoading[`${storeType}-rebuild`] ? (
+                            <Loader2 className="h-3 w-3 animate-spin" />
+                          ) : (
+                            <RefreshCw className="h-3 w-3" />
+                          )}
+                        </Button>
 
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <Button size="sm" variant="outline" className="border-transparent text-gray-300 hover:text-white hover:bg-white/10">
-                      <Info className="h-3 w-3" />
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent className="bg-gray-800 border-gray-600">
-                    <DialogHeader>
-                      <DialogTitle className="text-white">Store Information</DialogTitle>
-                      <DialogDescription className="text-gray-400">
-                        Detailed information about {storeType} store
-                      </DialogDescription>
-                    </DialogHeader>
-                    <div className="space-y-2 text-sm">
-                      <div className="flex justify-between">
-                        <span className="text-gray-400">Type:</span>
-                        <span className="text-white">{storeInfo.type}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-gray-400">Persist Directory:</span>
-                        <span className="text-white text-xs">{storeInfo.persist_dir}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-gray-400">Data Source:</span>
-                        <span className="text-white text-xs">{storeInfo.data_source}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-gray-400">Exists:</span>
-                        <span className="text-white">{storeInfo.exists ? 'Yes' : 'No'}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-gray-400">Data Source Exists:</span>
-                        <span className="text-white">{storeInfo.data_source_exists ? 'Yes' : 'No'}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-gray-400">Document Count:</span>
-                        <span className="text-white">{storeInfo.document_count || 'N/A'}</span>
-                      </div>
-                    </div>
-                  </DialogContent>
-                </Dialog>
+                        <Dialog>
+                          <DialogTrigger asChild>
+                            <Button size="sm" variant="outline" className="border-transparent text-gray-300 hover:text-white hover:bg-white/10" title="Info">
+                              <Info className="h-3 w-3" />
+                            </Button>
+                          </DialogTrigger>
+                          <DialogContent className="bg-gray-800 border-gray-600">
+                            <DialogHeader>
+                              <DialogTitle className="text-white">Store Information</DialogTitle>
+                              <DialogDescription className="text-gray-400">
+                                Detailed information about {storeType} store
+                              </DialogDescription>
+                            </DialogHeader>
+                            <div className="space-y-2 text-sm">
+                              <div className="flex justify-between">
+                                <span className="text-gray-400">Type:</span>
+                                <span className="text-white">{storeInfo.type}</span>
+                              </div>
+                              <div className="flex justify-between">
+                                <span className="text-gray-400">Persist Directory:</span>
+                                <span className="text-white text-xs">{storeInfo.persist_dir}</span>
+                              </div>
+                              <div className="flex justify-between">
+                                <span className="text-gray-400">Data Source:</span>
+                                <span className="text-white text-xs">{storeInfo.data_source}</span>
+                              </div>
+                              <div className="flex justify-between">
+                                <span className="text-gray-400">Exists:</span>
+                                <span className="text-white">{storeInfo.exists ? 'Yes' : 'No'}</span>
+                              </div>
+                              <div className="flex justify-between">
+                                <span className="text-gray-400">Data Source Exists:</span>
+                                <span className="text-white">{storeInfo.data_source_exists ? 'Yes' : 'No'}</span>
+                              </div>
+                              <div className="flex justify-between">
+                                <span className="text-gray-400">Document Count:</span>
+                                <span className="text-white">{storeInfo.document_count || 'N/A'}</span>
+                              </div>
+                            </div>
+                          </DialogContent>
+                        </Dialog>
 
-                <AlertDialog>
-                  <AlertDialogTrigger asChild>
-                    <Button 
-                      size="sm" 
-                      variant="outline"
-                      disabled={operationLoading[`${storeType}-delete`]}
-                      className="border-gray-600 text-white hover:bg-gray-700"
-                    >
-                      {operationLoading[`${storeType}-delete`] ? (
-                        <Loader2 className="h-3 w-3 animate-spin" />
-                      ) : (
-                        <Trash2 className="h-3 w-3" />
-                      )}
-                    </Button>
-                  </AlertDialogTrigger>
-                  <AlertDialogContent className="bg-gray-900 border-gray-800">
-                    <AlertDialogHeader>
-                      <AlertDialogTitle className="text-white">Delete Vector Store</AlertDialogTitle>
-                      <AlertDialogDescription className="text-gray-400">
-                        Are you sure you want to delete the {storeType} vector store? This action cannot be undone.
-                      </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter>
-                      <AlertDialogCancel className="border-transparent text-gray-300 hover:text-white hover:bg-white/10">
-                        Cancel
-                      </AlertDialogCancel>
-                      <AlertDialogAction
-                        onClick={() => handleStoreOperation(storeType, 'delete')}
-                        className="bg-black/30 hover:bg-black/40 text-white"
-                      >
-                        Delete
-                      </AlertDialogAction>
-                    </AlertDialogFooter>
-                  </AlertDialogContent>
-                </AlertDialog>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <Button 
+                              size="sm" 
+                              variant="outline"
+                              disabled={operationLoading[`${storeType}-delete`]}
+                              className="border-gray-600 text-white hover:bg-gray-700"
+                              title="Delete"
+                            >
+                              {operationLoading[`${storeType}-delete`] ? (
+                                <Loader2 className="h-3 w-3 animate-spin" />
+                              ) : (
+                                <Trash2 className="h-3 w-3" />
+                              )}
+                            </Button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent className="bg-gray-900 border-gray-800">
+                            <AlertDialogHeader>
+                              <AlertDialogTitle className="text-white">Delete Vector Store</AlertDialogTitle>
+                              <AlertDialogDescription className="text-gray-400">
+                                Are you sure you want to delete the {storeType} vector store? This action cannot be undone.
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel className="border-transparent text-gray-300 hover:text-white hover:bg-white/10">
+                                Cancel
+                              </AlertDialogCancel>
+                              <AlertDialogAction
+                                onClick={() => handleStoreOperation(storeType, 'delete')}
+                                className="bg-black/30 hover:bg-black/40 text-white"
+                              >
+                                Delete
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 };
