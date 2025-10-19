@@ -100,7 +100,7 @@ const AdminDashboard = () => {
   const getHealthIcon = (status) => {
     switch (status) {
       case 'healthy':
-        return <CheckCircle className="h-5 w-5 text-[#60a5fa]" />;
+        return <CheckCircle className="h-5 w-5 text-gray-300" />;
       case 'degraded':
         return <AlertCircle className="h-5 w-5 text-yellow-500" />;
       default:
@@ -111,7 +111,7 @@ const AdminDashboard = () => {
   const getHealthColor = (status) => {
     switch (status) {
       case 'healthy':
-        return 'bg-[#60a5fa]/20 text-[#60a5fa] border-[#60a5fa]/30';
+        return 'bg-white/10 text-white border-white/10';
       case 'degraded':
         return 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30';
       default:
@@ -122,7 +122,7 @@ const AdminDashboard = () => {
   return (
     <div className="min-h-screen bg-black">
       {/* Sidebar */}
-      <aside className="fixed inset-y-0 left-0 w-64 bg-gray-950 border-r border-gray-800 px-4 py-6 flex flex-col">
+      <aside className="fixed inset-y-0 left-0 w-64 bg-black border-r border-white/10 px-4 py-6 flex flex-col">
         <div className="flex items-center space-x-3 px-2">
           <Shield className="h-6 w-6 text-white" />
           <span className="text-white font-semibold">Admin</span>
@@ -189,15 +189,15 @@ const AdminDashboard = () => {
             System Info
           </Button>
         </div>
-        <div className="mt-6 border-t border-gray-800 pt-4">
-          <div className="flex items-center gap-3 p-3 bg-[#0F0F0F] rounded-lg border border-gray-800">
+        <div className="mt-6 border-t border-white/10 pt-4">
+          <div className="flex items-center gap-3 p-3 bg-black rounded-lg border border-white/10">
             <div className="w-8 h-8 bg-gray-700 rounded-full flex items-center justify-center flex-shrink-0">
               <span className="text-white text-sm font-semibold">{user?.username?.charAt(0).toUpperCase() || 'U'}</span>
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-white text-sm font-medium truncate">{user?.username || 'Admin'}</p>
               {user?.email ? (
-                <p className="text-gray-400 text-xs truncate">{user.email}</p>
+                <p className="text-white text-xs truncate">{user.email}</p>
               ) : null}
             </div>
           </div>
@@ -206,7 +206,7 @@ const AdminDashboard = () => {
 
       {/* Main content */}
       <div className="ml-64">
-        <div className="border-b border-gray-800 bg-gray-900/80 backdrop-blur supports-[backdrop-filter]:bg-gray-900/70">
+        <div className="border-b border-white/10 bg-black">
           <div className="px-6 py-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
@@ -215,7 +215,7 @@ const AdminDashboard = () => {
                 <Button 
                   onClick={refreshData}
                   variant="outline"
-                  className="border-gray-700 text-white hover:bg-gray-800"
+                  className="bg-[#60a5fa] text-black hover:bg-[#93c5fd] border-transparent"
                 >
                   <RefreshCw className="h-4 w-4 mr-2" />
                   Refresh
@@ -223,7 +223,7 @@ const AdminDashboard = () => {
                 <Button 
                   onClick={handleLogout}
                   variant="outline"
-                  className="border-gray-700 text-white hover:bg-gray-800"
+                  className="bg-[#60a5fa] text-black hover:bg-[#93c5fd] border-transparent"
                 >
                   <LogOut className="h-4 w-4 mr-2" />
                   Logout
@@ -235,7 +235,7 @@ const AdminDashboard = () => {
 
         <div className="px-6 py-8">
           {error && (
-            <Card className="mb-6 border-gray-700 bg-gray-900">
+              <Card className="mb-6 bg-black border-white/10">
               <CardContent className="pt-6">
                 <div className="flex items-center space-x-2 text-white">
                   <AlertCircle className="h-5 w-5" />
@@ -249,10 +249,10 @@ const AdminDashboard = () => {
             {activeSection === 'overview' && (
               <>
                 <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
-                  <Card className="bg-gray-900 border-gray-800">
+                  <Card className="bg-black border-white/10">
                     <CardContent className="p-4">
                       <div className="flex items-center justify-between">
-                        <span className="text-xs text-gray-400">System Status</span>
+                        <span className="text-xs text-white">System Status</span>
                         <Activity className="h-4 w-4 text-gray-400" />
                       </div>
                       <div className="mt-3 flex items-center space-x-2">
@@ -261,44 +261,44 @@ const AdminDashboard = () => {
                           {healthStatus?.status || 'Unknown'}
                         </Badge>
                       </div>
-                      <div className="text-[11px] text-gray-500 mt-1">
+                      <div className="text-[11px] text-white mt-1">
                         {healthStatus?.healthy_stores || 0}/{healthStatus?.total_stores || 0} healthy
                       </div>
                     </CardContent>
                   </Card>
 
-                  <Card className="bg-gray-900 border-gray-800">
+                  <Card className="bg-black border-white/10">
                     <CardContent className="p-4">
                       <div className="flex items-center justify-between">
-                        <span className="text-xs text-gray-400">Total Documents</span>
+                        <span className="text-xs text-white">Total Documents</span>
                         <FileText className="h-4 w-4 text-gray-400" />
                       </div>
                       <div className="mt-3 text-2xl font-semibold text-white">
                         {systemStats?.statistics?.total_documents || 0}
                       </div>
-                      <div className="text-[11px] text-gray-500 mt-1">
+                      <div className="text-[11px] text-white mt-1">
                         Across {systemStats?.statistics?.total_stores || 0} stores
                       </div>
                     </CardContent>
                   </Card>
 
-                  <Card className="bg-gray-900 border-gray-800">
+                  <Card className="bg-black border-white/10">
                     <CardContent className="p-4">
                       <div className="flex items-center justify-between">
-                        <span className="text-xs text-gray-400">Active Stores</span>
+                        <span className="text-xs text-white">Active Stores</span>
                         <Database className="h-4 w-4 text-gray-400" />
                       </div>
                       <div className="mt-3 text-2xl font-semibold text-white">
                         {systemStats?.statistics?.active_stores || 0}
                       </div>
-                      <div className="text-[11px] text-gray-500 mt-1">Available</div>
+                      <div className="text-[11px] text-white mt-1">Available</div>
                     </CardContent>
                   </Card>
 
-                  <Card className="bg-gray-900 border-gray-800">
+                  <Card className="bg-black border-white/10">
                     <CardContent className="p-4">
                       <div className="flex items-center justify-between">
-                        <span className="text-xs text-gray-400">API Version</span>
+                        <span className="text-xs text-white">API Version</span>
                         <Settings className="h-4 w-4 text-gray-400" />
                       </div>
                       <div className="mt-3 text-2xl font-semibold text-white">
@@ -308,19 +308,19 @@ const AdminDashboard = () => {
                   </Card>
                 </div>
 
-                <Card className="bg-gray-900 border-gray-800">
+                <Card className="bg-black border-white/10">
                   <CardHeader>
                     <CardTitle className="text-white text-base">Quick Actions</CardTitle>
-                    <CardDescription className="text-gray-400">Common tasks</CardDescription>
+                    <CardDescription className="text-white">Common tasks</CardDescription>
                   </CardHeader>
                   <CardContent className="grid grid-cols-1 md:grid-cols-3 gap-2">
-                    <Button onClick={() => setActiveSection('vector-stores')} className="justify-start bg-gray-800 hover:bg-gray-700">
+                    <Button onClick={() => setActiveSection('vector-stores')} className="justify-start bg-[#60a5fa] text-black hover:bg-[#93c5fd]">
                       <Database className="h-4 w-4 mr-2" /> Manage Vector Stores
                     </Button>
-                    <Button onClick={() => setActiveSection('exams')} className="justify-start bg-gray-800 hover:bg-gray-700">
+                    <Button onClick={() => setActiveSection('exams')} className="justify-start bg-[#60a5fa] text-black hover:bg-[#93c5fd]">
                       <Upload className="h-4 w-4 mr-2" /> Upload Exam Files
                     </Button>
-                    <Button onClick={() => setActiveSection('health')} className="justify-start bg-gray-800 hover:bg-gray-700">
+                    <Button onClick={() => setActiveSection('health')} className="justify-start bg-[#60a5fa] text-black hover:bg-[#93c5fd]">
                       <Activity className="h-4 w-4 mr-2" /> Check System Health
                     </Button>
                   </CardContent>
