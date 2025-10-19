@@ -71,7 +71,7 @@ const HealthMonitor = () => {
   const getHealthIcon = (status) => {
     switch (status) {
       case 'healthy':
-        return <CheckCircle className="h-6 w-6 text-[#60a5fa]" />;
+        return <CheckCircle className="h-6 w-6 text-gray-300" />;
       case 'degraded':
         return <AlertCircle className="h-6 w-6 text-yellow-500" />;
       default:
@@ -82,7 +82,7 @@ const HealthMonitor = () => {
   const getHealthColor = (status) => {
     switch (status) {
       case 'healthy':
-        return 'bg-[#60a5fa]/20 text-[#60a5fa] border-[#60a5fa]/30';
+        return 'bg-white/10 text-white border-white/10';
       case 'degraded':
         return 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30';
       default:
@@ -93,7 +93,7 @@ const HealthMonitor = () => {
   const getHealthTrend = (healthyStores, totalStores) => {
     const percentage = (healthyStores / totalStores) * 100;
     if (percentage >= 90) {
-      return <TrendingUp className="h-4 w-4 text-[#60a5fa]" />;
+      return <TrendingUp className="h-4 w-4 text-gray-300" />;
     } else if (percentage >= 70) {
       return <Minus className="h-4 w-4 text-yellow-500" />;
     } else {
@@ -103,7 +103,7 @@ const HealthMonitor = () => {
 
   const getStoreHealthIcon = (exists, dataSourceExists) => {
     if (exists && dataSourceExists) {
-      return <CheckCircle className="h-4 w-4 text-[#60a5fa]" />;
+      return <CheckCircle className="h-4 w-4 text-gray-300" />;
     } else if (exists || dataSourceExists) {
       return <AlertCircle className="h-4 w-4 text-yellow-500" />;
     } else {
@@ -123,7 +123,7 @@ const HealthMonitor = () => {
   return (
     <div className="space-y-6">
       {error && (
-        <Card className="border-gray-800 bg-gray-900">
+        <Card className="bg-black border-white/10">
           <CardContent className="pt-6">
             <div className="flex items-center space-x-2 text-white">
               <AlertCircle className="h-5 w-5" />
@@ -143,7 +143,7 @@ const HealthMonitor = () => {
           <Button
             onClick={() => setAutoRefresh(!autoRefresh)}
             variant="outline"
-            className={"border-transparent text-gray-300 hover:text-white hover:bg-white/10"}
+            className={"bg-[#60a5fa] text-black hover:bg-[#93c5fd] border-transparent"}
           >
             <Heart className="h-4 w-4 mr-2" />
             {autoRefresh ? 'Auto Refresh ON' : 'Auto Refresh OFF'}
@@ -152,7 +152,7 @@ const HealthMonitor = () => {
             onClick={loadHealthData}
             disabled={loading}
             variant="outline"
-            className="border-transparent text-gray-300 hover:text-white hover:bg-white/10"
+            className="bg-[#60a5fa] text-black hover:bg-[#93c5fd] border-transparent"
           >
             {loading ? (
               <Loader2 className="h-4 w-4 animate-spin" />
@@ -165,13 +165,13 @@ const HealthMonitor = () => {
 
       {/* Overall Health Status */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <Card className="bg-gray-900 border-gray-800">
+        <Card className="bg-black border-white/10">
           <CardHeader>
             <CardTitle className="text-white flex items-center space-x-2">
               <Activity className="h-5 w-5" />
               <span>System Health</span>
             </CardTitle>
-            <CardDescription className="text-gray-400">
+            <CardDescription className="text-white">
               Overall system status
             </CardDescription>
           </CardHeader>
@@ -199,13 +199,13 @@ const HealthMonitor = () => {
           </CardContent>
         </Card>
 
-        <Card className="bg-gray-900 border-gray-800">
+        <Card className="bg-black border-white/10">
           <CardHeader>
             <CardTitle className="text-white flex items-center space-x-2">
               <Database className="h-5 w-5" />
               <span>Vector Stores Health</span>
             </CardTitle>
-            <CardDescription className="text-gray-400">
+            <CardDescription className="text-white">
               Vector stores status overview
             </CardDescription>
           </CardHeader>
@@ -244,10 +244,10 @@ const HealthMonitor = () => {
 
       {/* Health Metrics */}
       {healthData && (
-        <Card className="bg-gray-900 border-gray-800">
+        <Card className="bg-black border-white/10">
           <CardHeader>
             <CardTitle className="text-white">Health Metrics</CardTitle>
-            <CardDescription className="text-gray-400">
+            <CardDescription className="text-white">
               Detailed health metrics and statistics
             </CardDescription>
           </CardHeader>
@@ -258,7 +258,7 @@ const HealthMonitor = () => {
                   {healthData.healthy_stores}
                 </div>
                 <div className="text-sm text-gray-400">Healthy Stores</div>
-                <div className="text-xs text-[#60a5fa] mt-1">
+                <div className="text-xs text-gray-300 mt-1">
                   {((healthData.healthy_stores / healthData.total_stores) * 100).toFixed(1)}% of total
                 </div>
               </div>
@@ -289,10 +289,10 @@ const HealthMonitor = () => {
 
       {/* Individual Store Health */}
       {healthData && healthData.stores && (
-        <Card className="bg-gray-900 border-gray-800">
+        <Card className="bg-black border-white/10">
           <CardHeader>
             <CardTitle className="text-white">Store Health Details</CardTitle>
-            <CardDescription className="text-gray-400">
+            <CardDescription className="text-white">
               Individual health status for each vector store
             </CardDescription>
           </CardHeader>
@@ -324,12 +324,12 @@ const HealthMonitor = () => {
 
       {/* Last Updated */}
       {healthData && (
-        <Card className="bg-gray-900 border-gray-800">
+        <Card className="bg-black border-white/10">
           <CardContent className="pt-6">
-            <div className="text-center text-sm text-gray-400">
+            <div className="text-center text-sm text-white">
               Last updated: {new Date(healthData.timestamp).toLocaleString()}
               {autoRefresh && (
-                <span className="ml-2 text-gray-300">• Auto-refresh enabled (30s)</span>
+                <span className="ml-2 text-white">• Auto-refresh enabled (30s)</span>
               )}
             </div>
           </CardContent>
