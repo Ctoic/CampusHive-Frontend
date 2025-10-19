@@ -14,6 +14,9 @@ import {
 	FaUserCircle,
 	FaTrash,
 	FaBars,
+	FaExclamationTriangle,
+	FaSync,
+	FaClipboard,
 	FaGraduationCap,
 } from "react-icons/fa";
 import { useAuth } from "../contexts/AuthContext";
@@ -42,6 +45,8 @@ const IntegratedChatbot = () => {
 	} = useChat();
 
 	const [input, setInput] = useState("");
+	const [showErrorDetails, setShowErrorDetails] = useState(false);
+	const lastActionRef = useRef("");
 	const endRef = useRef(null);
 
 	useEffect(() => {
@@ -88,8 +93,9 @@ const IntegratedChatbot = () => {
 		}
 	};
 
-  const handleQuickAction = async (action) => {
+	const handleQuickAction = async (action) => {
     try {
+			lastActionRef.current = action;
       // If no current session, create a new one
       if (!currentSession) {
         const created = await createSession("New Chat");
@@ -104,11 +110,12 @@ const IntegratedChatbot = () => {
     }
   };
 
-  const send = async () => {
+	const send = async () => {
 		if (!input.trim()) return;
 		const currentInput = input;
 		setInput("");
 		try {
+			lastActionRef.current = currentInput;
       // If no current session, create a new one
       if (!currentSession) {
         const created = await createSession("New Chat");
@@ -120,6 +127,35 @@ const IntegratedChatbot = () => {
       await sendMessage(currentInput, currentSession?.id);
 		} catch (error) {
 			console.error("Failed to send message:", error);
+		}
+	};
+
+	const copyErrorDetails = async () => {
+		if (!error) return;
+		try {
+			await navigator.clipboard.writeText(String(error));
+		} catch (_) {
+			// no-op
+		}
+	};
+
+	const retryLastAction = async () => {
+		const last = lastActionRef.current?.trim();
+		if (!last) {
+			clearError();
+			return;
+		}
+		try {
+			if (!currentSession) {
+				const created = await createSession("New Chat");
+				if (created?.id) {
+					await loadSession(created.id);
+				}
+			}
+			await sendMessage(last, currentSession?.id);
+			clearError();
+		} catch (err) {
+			console.error("Retry failed:", err);
 		}
 	};
 
@@ -394,20 +430,56 @@ const IntegratedChatbot = () => {
 			</div>
 
 			<main className="flex-1 flex flex-col bg-black">
-				{/* Error Display */}
-				{error && (
-					<div className="bg-red-50 border-b border-red-200 px-6 py-3">
-						<div className="flex items-center justify-between">
-							<p className="text-red-700 text-sm">{error}</p>
-							<button
-								onClick={clearError}
-								className="text-red-500 hover:text-red-700 font-bold"
-							>
-								×
-							</button>
+			{/* Error Display */}
+			{error && (
+				<div className="px-6 py-4 border-b border-red-900/40 bg-red-950">
+					<div className="max-w-4xl mx-auto">
+						<div className="flex items-start gap-3">
+							<div className="mt-0.5">
+								<FaExclamationTriangle className="text-red-400" />
+							</div>
+							<div className="flex-1 min-w-0">
+								<p className="text-red-200 text-sm font-semibold">Something went wrong</p>
+								<p className="text-red-300/90 text-xs mt-1 truncate">
+									{typeof error === "string" ? error : "An unexpected error occurred."}
+								</p>
+								{showErrorDetails && (
+									<pre className="mt-3 text-[11px] leading-relaxed text-red-200/90 bg-red-900/30 border border-red-900/40 rounded-lg p-3 whitespace-pre-wrap break-words">
+										{String(error)}
+									</pre>
+								)}
+								<div className="mt-3 flex flex-wrap gap-2">
+									<button
+										onClick={() => setShowErrorDetails((v) => !v)}
+										className="px-3 py-1.5 text-xs rounded-md border border-red-800/60 text-red-200 hover:bg-red-900/30"
+									>
+										{showErrorDetails ? "Hide details" : "Show details"}
+									</button>
+									<button
+										onClick={copyErrorDetails}
+										className="px-3 py-1.5 text-xs rounded-md border border-red-800/60 text-red-200 hover:bg-red-900/30 inline-flex items-center gap-1"
+									>
+										<FaClipboard className="text-[10px]" /> Copy details
+									</button>
+									<button
+										onClick={retryLastAction}
+										className="px-3 py-1.5 text-xs rounded-md bg-red-700 hover:bg-red-600 text-white inline-flex items-center gap-1"
+										disabled={loading}
+									>
+										<FaSync className="text-[10px]" /> Retry last action
+									</button>
+									<button
+										onClick={clearError}
+										className="px-3 py-1.5 text-xs rounded-md text-red-200 hover:text-white"
+									>
+										Dismiss
+									</button>
+								</div>
+							</div>
 						</div>
 					</div>
-				)}
+				</div>
+			)}
 
 				{/* Chat Content */}
 				{messages.length === 0 ? (
