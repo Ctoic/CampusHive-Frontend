@@ -55,6 +55,7 @@ const VectorStoresManagement = () => {
   const [batchAction, setBatchAction] = useState('create');
   const [forceRecreate, setForceRecreate] = useState(false);
   const [operationLoading, setOperationLoading] = useState({});
+  const [successMessage, setSuccessMessage] = useState(null);
 
   useEffect(() => {
     loadVectorStores();
@@ -64,9 +65,7 @@ const VectorStoresManagement = () => {
     try {
       setLoading(true);
       setError(null);
-      console.log('Loading vector stores...');
       const data = await apiClient.getVectorStores();
-      console.log('Vector stores data received:', data);
       setStores(data);
     } catch (err) {
       console.error('Failed to load vector stores:', err);
@@ -137,12 +136,33 @@ const VectorStoresManagement = () => {
   const handleRefreshData = async () => {
     try {
       setOperationLoading(prev => ({ ...prev, refresh: true }));
+      setError(null);
+      
+      console.log('Starting data refresh...');
       const result = await apiClient.refreshVectorStores();
+      console.log('Data refresh result:', result);
+      
+      // Reload the stores to show updated document counts
       await loadVectorStores();
+      
+      // Show success message
+      if (result.success) {
+        console.log('Data refresh completed successfully');
+        setSuccessMessage(result.message || 'Vector stores rebuilt successfully!');
+        setError(null);
+        // Clear success message after 5 seconds
+        setTimeout(() => setSuccessMessage(null), 5000);
+      } else {
+        console.warn('Data refresh completed with some failures:', result.message);
+        setError(result.message || 'Data refresh completed with some failures');
+        setSuccessMessage(null);
+      }
+      
       return result;
     } catch (err) {
       console.error('Data refresh failed:', err);
-      setError(err.message);
+      setError(`Data refresh failed: ${err.message}`);
+      setSuccessMessage(null);
     } finally {
       setOperationLoading(prev => ({ ...prev, refresh: false }));
     }
@@ -188,11 +208,22 @@ const VectorStoresManagement = () => {
   return (
     <div className="space-y-6">
       {error && (
-        <Card className="border-gray-800 bg-gray-900">
+        <Card className="border-red-500/50 bg-red-900/20">
           <CardContent className="pt-6">
-            <div className="flex items-center space-x-2 text-white">
+            <div className="flex items-center space-x-2 text-red-300">
               <AlertCircle className="h-5 w-5" />
               <span>Error: {error}</span>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {successMessage && (
+        <Card className="border-green-500/50 bg-green-900/20">
+          <CardContent className="pt-6">
+            <div className="flex items-center space-x-2 text-green-300">
+              <CheckCircle className="h-5 w-5" />
+              <span>{successMessage}</span>
             </div>
           </CardContent>
         </Card>
@@ -216,19 +247,19 @@ const VectorStoresManagement = () => {
             ) : (
               <RefreshCw className="h-4 w-4 mr-2" />
             )}
-            Refresh
+            Refresh List
           </Button>
           <Button 
             onClick={handleRefreshData}
             disabled={operationLoading.refresh}
-            className="bg-black/30 hover:bg-black/40 text-white"
+            className="bg-[#60a5fa] text-black hover:bg-[#93c5fd]"
           >
             {operationLoading.refresh ? (
               <Loader2 className="h-4 w-4 mr-2 animate-spin" />
             ) : (
               <RefreshCw className="h-4 w-4 mr-2" />
             )}
-            Refresh Data
+            Rebuild Stores
           </Button>
         </div>
       </div>
