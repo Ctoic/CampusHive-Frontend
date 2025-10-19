@@ -1,7 +1,7 @@
 # 🎓 CampusHive Frontend
 
 <div align="center">
-  <img src="src/assets/logo.png" alt="CampusHive Logo" width="200" height="200">
+  <img src="src/assets/campushive.png" alt="CampusHive Logo" width="200" height="200">
   
   **An Intelligent AI-Powered Academic Assistant Platform**
   
