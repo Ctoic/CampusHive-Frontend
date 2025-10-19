@@ -68,15 +68,19 @@ const ExamUpload = () => {
   };
 
   const handleFileSelect = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      if (file.type !== 'application/pdf') {
-        setError('Please select a PDF file');
-        return;
-      }
-      setSelectedFile(file);
-      setError(null);
+    const file = event.target.files && event.target.files[0] ? event.target.files[0] : null;
+    if (!file) {
+      setSelectedFile(null);
+      return;
     }
+    const isPdf = file.type === 'application/pdf' || (file.name || '').toLowerCase().endsWith('.pdf');
+    if (!isPdf) {
+      setSelectedFile(null);
+      setError('Please select a PDF file');
+      return;
+    }
+    setSelectedFile(file);
+    setError(null);
   };
 
   const handleUpload = async () => {
@@ -118,7 +122,7 @@ const ExamUpload = () => {
   const getStatusIcon = (status) => {
     switch (status) {
       case 'processed':
-        return <CheckCircle className="h-5 w-5 text-[#60a5fa]" />;
+        return <CheckCircle className="h-5 w-5 text-gray-300" />;
       case 'processing':
         return <Loader2 className="h-5 w-5 text-blue-500 animate-spin" />;
       case 'failed':
@@ -131,7 +135,7 @@ const ExamUpload = () => {
   const getStatusBadge = (status) => {
     switch (status) {
       case 'processed':
-        return <Badge className="bg-[#60a5fa]/20 text-[#60a5fa] border-[#60a5fa]/30">Processed</Badge>;
+        return <Badge className="bg-white/10 text-white border-white/10">Processed</Badge>;
       case 'processing':
         return <Badge className="bg-blue-500/20 text-blue-400 border-blue-500/30">Processing</Badge>;
       case 'failed':
@@ -157,7 +161,7 @@ const ExamUpload = () => {
   return (
     <div className="space-y-6">
       {error && (
-        <Card className="border-gray-800 bg-gray-900">
+        <Card className="bg-black border-white/10">
           <CardContent className="pt-6">
             <div className="flex items-center space-x-2 text-white">
               <AlertCircle className="h-5 w-5" />
@@ -168,7 +172,7 @@ const ExamUpload = () => {
       )}
 
       {success && (
-        <Card className="border-gray-800 bg-gray-900">
+        <Card className="bg-black border-white/10">
           <CardContent className="pt-6">
             <div className="flex items-center space-x-2 text-white">
               <CheckCircle className="h-5 w-5" />
@@ -179,10 +183,10 @@ const ExamUpload = () => {
       )}
 
       {/* Upload Form */}
-      <Card className="bg-gray-900 border-gray-800">
+      <Card className="bg-black border-white/10">
         <CardHeader>
           <CardTitle className="text-white">Upload Exam</CardTitle>
-          <CardDescription className="text-gray-400">
+          <CardDescription className="text-white">
             Upload a new exam PDF file for processing
           </CardDescription>
         </CardHeader>
@@ -231,7 +235,7 @@ const ExamUpload = () => {
           <Button 
             onClick={handleUpload}
             disabled={uploading || !selectedFile || !courseName.trim() || !examType.trim()}
-            className="w-full bg-black/30 hover:bg-black/40 text-white"
+            className="w-full bg-[#60a5fa] text-black hover:bg-[#93c5fd]"
           >
             {uploading ? (
               <>
@@ -249,19 +253,19 @@ const ExamUpload = () => {
       </Card>
 
       {/* Uploaded Exams List */}
-      <Card className="bg-gray-900 border-gray-800">
+      <Card className="bg-black border-white/10">
         <CardHeader>
           <div className="flex items-center justify-between">
             <div>
               <CardTitle className="text-white">Uploaded Exams</CardTitle>
-              <CardDescription className="text-gray-400">
+              <CardDescription className="text-white">
                 Manage and monitor uploaded exam files
               </CardDescription>
             </div>
             <Button 
               onClick={loadUploadedExams}
               variant="outline"
-              className="border-transparent text-gray-300 hover:text-white hover:bg-white/10"
+              className="bg-[#60a5fa] text-black hover:bg-[#93c5fd] border-transparent"
             >
               <Upload className="h-4 w-4 mr-2" />
               Refresh
