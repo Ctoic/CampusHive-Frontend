@@ -48,50 +48,45 @@ CampusHive Frontend is a modern, responsive web application built with React and
 
 ### Landing Page & Authentication
 <div align="center">
-  <img src="screenshots/Screenshot 2025-10-16 at 12.15.23 PM.png" alt="Landing Page" width="800">
-  <p><em>Beautiful landing page with modern design and interactive elements</em></p>
+  <img src="screenshots/hero.png" alt="Hero Section" width="800">
+  <p><em>Beautiful hero section with modern design and interactive elements</em></p>
+</div>
+
+<div align="center">
+  <img src="screenshots/login.png" alt="Login Page" width="800">
+  <p><em>Secure login interface with elegant design</em></p>
+</div>
+
+<div align="center">
+  <img src="screenshots/signup.png" alt="Signup Page" width="800">
+  <p><em>User registration with form validation and security</em></p>
+</div>
+
+<div align="center">
+  <img src="screenshots/why.png" alt="Why Choose CampusHive" width="800">
+  <p><em>Feature showcase highlighting platform benefits</em></p>
 </div>
 
 ### Chatbot Interface
 <div align="center">
-  <img src="screenshots/Screenshot 2025-10-17 at 9.50.18 AM.png" alt="Chatbot Interface" width="800">
+  <img src="screenshots/chatbot.png" alt="Chatbot Interface" width="800">
   <p><em>Intelligent chatbot with session management and quick actions</em></p>
-</div>
-
-<div align="center">
-  <img src="screenshots/Screenshot 2025-10-17 at 9.50.27 AM.png" alt="Chatbot Conversation" width="800">
-  <p><em>Rich conversation interface with markdown support</em></p>
 </div>
 
 ### Admin Dashboard
 <div align="center">
-  <img src="screenshots/Screenshot 2025-10-17 at 9.50.40 AM.png" alt="Admin Dashboard Overview" width="800">
-  <p><em>Comprehensive admin dashboard with system overview</em></p>
+  <img src="screenshots/admin.png" alt="Admin Dashboard Overview" width="800">
+  <p><em>Comprehensive admin dashboard with system overview and navigation</em></p>
 </div>
 
 <div align="center">
-  <img src="screenshots/Screenshot 2025-10-17 at 9.50.54 AM.png" alt="User Management" width="800">
-  <p><em>User management interface with role-based controls</em></p>
+  <img src="screenshots/users.png" alt="User Management" width="800">
+  <p><em>User management interface with role-based controls and administration</em></p>
 </div>
 
 <div align="center">
-  <img src="screenshots/Screenshot 2025-10-17 at 9.51.15 AM.png" alt="Vector Store Management" width="800">
-  <p><em>AI knowledge base management and monitoring</em></p>
-</div>
-
-<div align="center">
-  <img src="screenshots/Screenshot 2025-10-17 at 9.51.49 AM.png" alt="System Health Monitor" width="800">
-  <p><em>Real-time system health monitoring and diagnostics</em></p>
-</div>
-
-<div align="center">
-  <img src="screenshots/Screenshot 2025-10-17 at 9.51.59 AM.png" alt="Exam Upload System" width="800">
-  <p><em>Bulk exam document upload and processing system</em></p>
-</div>
-
-<div align="center">
-  <img src="screenshots/Screenshot 2025-10-17 at 9.52.07 AM.png" alt="System Information" width="800">
-  <p><em>Detailed system information and performance metrics</em></p>
+  <img src="screenshots/health.png" alt="System Health Monitor" width="800">
+  <p><em>Real-time system health monitoring and performance diagnostics</em></p>
 </div>
 
 ## 🛠️ Technology Stack
