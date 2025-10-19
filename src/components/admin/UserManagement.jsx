@@ -82,27 +82,27 @@ const UserManagement = () => {
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-xl text-white font-semibold flex items-center gap-2"><Users className="h-5 w-5" /> Users</h2>
-          <p className="text-sm text-gray-400">Manage roles and remove accounts</p>
+          <p className="text-sm text-white">Manage roles and remove accounts</p>
         </div>
-        <Button onClick={refresh} variant="outline" className="border-gray-700 text-white hover:bg-gray-800">
+        <Button onClick={refresh} variant="outline" className="bg-[#60a5fa] text-black hover:bg-[#93c5fd] border-transparent">
           <RefreshCw className={`h-4 w-4 mr-2 ${refreshing ? 'animate-spin' : ''}`} /> Refresh
         </Button>
       </div>
 
-      <Card className="bg-gray-900 border-gray-800">
+      <Card className="bg-black border-white/10">
         <CardHeader className="pb-2">
           <CardTitle className="text-white text-base">Directory</CardTitle>
-          <CardDescription className="text-gray-400">Search and manage users</CardDescription>
+          <CardDescription className="text-white">Search and manage users</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="flex items-center gap-3 mb-4">
             <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white" />
               <Input
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Search by username, email, or ID"
-                className="pl-9 bg-gray-800 border-gray-700 text-white placeholder:text-gray-500"
+                className="pl-9 bg-white/10 border-white/10 text-white placeholder:text-white/80"
               />
             </div>
           </div>
@@ -111,39 +111,39 @@ const UserManagement = () => {
             <div className="text-sm text-red-400 mb-3">{error}</div>
           )}
 
-          <div className="rounded-lg border border-gray-800 overflow-hidden">
+          <div className="rounded-lg border border-white/10 overflow-hidden">
             <Table>
               <TableHeader>
                 <TableRow className="hover:bg-transparent">
-                  <TableHead className="text-gray-400">ID</TableHead>
-                  <TableHead className="text-gray-400">Username</TableHead>
-                  <TableHead className="text-gray-400">Email</TableHead>
-                  <TableHead className="text-gray-400">Role</TableHead>
-                  <TableHead className="text-gray-400 text-right">Actions</TableHead>
+                  <TableHead className="text-white">ID</TableHead>
+                  <TableHead className="text-white">Username</TableHead>
+                  <TableHead className="text-white">Email</TableHead>
+                  <TableHead className="text-white">Role</TableHead>
+                  <TableHead className="text-white text-right">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {loading ? (
                   <TableRow>
-                    <TableCell colSpan={5} className="text-center text-gray-400">Loading...</TableCell>
+                    <TableCell colSpan={5} className="text-center text-white">Loading...</TableCell>
                   </TableRow>
                 ) : filtered.length === 0 ? (
                   <TableRow>
-                    <TableCell colSpan={5} className="text-center text-gray-400">No users found</TableCell>
+                    <TableCell colSpan={5} className="text-center text-white">No users found</TableCell>
                   </TableRow>
                 ) : (
                   filtered.map((u) => (
-                    <TableRow key={u.id} className="hover:bg-gray-800/40">
-                      <TableCell className="text-white/90">{u.id}</TableCell>
+                    <TableRow key={u.id} className="hover:bg-white/5">
+                      <TableCell className="text-white">{u.id}</TableCell>
                       <TableCell className="text-white">{u.username}</TableCell>
-                      <TableCell className="text-gray-300">{u.email}</TableCell>
+                      <TableCell className="text-white">{u.email}</TableCell>
                       <TableCell>
                         <div className="flex items-center gap-2">
                           <Badge className={`${roleColor(u.role)}`}>{u.role}</Badge>
                           <select
                             defaultValue={u.role}
                             onChange={(e) => handleRoleChange(u.id, e.target.value)}
-                            className="w-[140px] bg-gray-800 border border-gray-700 text-white rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-white/20"
+                            className="w-[140px] bg-white/10 border border-white/10 text-white rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-white/20"
                           >
                             <option value="student">Student</option>
                             <option value="faculty">Faculty</option>
