@@ -144,7 +144,7 @@ button {
 }
 
 button:hover {
-  background-color: #28d46a;
+  background-color: #60a5fa;
   transform: translateY(-2px);
 }
 

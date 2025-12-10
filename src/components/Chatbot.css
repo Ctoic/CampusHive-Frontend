@@ -37,8 +37,8 @@
   }
   .cbp__new-chat {
     margin-top: auto;
-    background: #00d462;
-    color: #121212;
+    background: #60a5fa;
+    color: #0b1220;
     border: none;
     padding: 8px;
     border-radius: 6px;
@@ -107,7 +107,7 @@
     border-radius: 50%;
   }
   .cbp__switch input:checked + .cbp__slider {
-    background: #00d462;
+    background: #60a5fa;
   }
   .cbp__switch input:checked + .cbp__slider:before {
     transform: translateX(16px);
@@ -153,7 +153,7 @@
   }
   .cbp__quick-actions button .icon {
     font-size: 1.25rem;
-    color: #00d462;
+    color: #60a5fa;
   }
   .cbp__quick-actions button:hover {
     background: #0f0f0f;
@@ -195,8 +195,8 @@
   }
   .cbp__message.user {
     margin-left: auto;
-    background: #00d462;
-    color: #121212;
+    background: #60a5fa;
+    color: #0b1220;
   }
   .cbp__message.bot {
     margin-right: auto;
@@ -223,7 +223,7 @@
     font-size: 0.875rem;
   }
   .cbp__input-bar button {
-    background: #00d462;
+    background: #60a5fa;
     border: none;
     padding: 0 12px;
     height: 32px;

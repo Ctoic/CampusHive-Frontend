@@ -6,21 +6,12 @@ import {
 	useLocation,
 } from "react-router-dom";
 import Navbar from "./components/Navbar";
-import Hero from "./components/Hero";
-import Benefits from "./components/Benefits";
-import Carousel from "./components/Carousel";
-import CTA from "./components/CTA";
-import Team from "./components/Team";
 import Footer from "./components/Footer";
 import Signup from "./components/Signup";
 import Login from "./components/Login";
-import FAQ from "./components/FAQ";
-import Chatbot from "./components/Chatbot";
 import IntegratedChatbot from "./components/IntegratedChatbot";
 import AdminDashboard from "./components/AdminDashboard";
 import ContactInfo from "./components/contact-info";
-import { ShootingStars } from "./components/ui/shooting-stars";
-import { StarsBackground } from "./components/ui/stars-background";
 import { AuthProvider } from "./contexts/AuthContext";
 import { ChatProvider } from "./contexts/ChatContext";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -28,6 +19,7 @@ import AdminProtectedRoute from "./components/AdminProtectedRoute";
 
 import "./App.css";
 import LandingPage from "./pages/LandingPage";
+import AboutPage from "./pages/AboutPage";
 
 function AppContent() {
 	const location = useLocation();
@@ -45,6 +37,7 @@ function AppContent() {
 						{/* <Navbar /> */}
 						<Routes>
 							<Route path="/" element={<LandingPage />} />
+							<Route path="/about" element={<AboutPage />} />
 							<Route path="/signup" element={<Signup />} />
 							<Route path="/login" element={<Login />} />
 							<Route 

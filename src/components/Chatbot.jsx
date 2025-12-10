@@ -542,7 +542,7 @@ const ChatbotPage = () => {
 										<div
 											className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center ${
 												m.sender === "user"
-													? "bg-gradient-to-br from-[#00d462] to-[#00b84d]"
+													? "bg-gradient-to-br from-[#60a5fa] to-[#3b82f6]"
 													: "bg-gradient-to-br from-purple-500 to-pink-500"
 											}`}
 										>
@@ -557,7 +557,7 @@ const ChatbotPage = () => {
 											<div
 												className={`p-4 rounded-2xl shadow-lg transition-all duration-200 ${
 													m.sender === "user"
-														? "bg-gradient-to-br from-[#00d462] to-[#00b84d] text-black rounded-tr-md"
+														? "bg-gradient-to-br from-[#60a5fa] to-[#3b82f6] text-black rounded-tr-md"
 														: m.isError
 														? "bg-red-900/20 border border-red-500/30 text-gray-100 rounded-tl-md"
 														: "bg-[#1A1A1A] border border-gray-800/50 text-gray-100 rounded-tl-md hover:border-gray-700/50"
@@ -600,9 +600,9 @@ const ChatbotPage = () => {
 										</div>
 										<div className="p-4 rounded-2xl rounded-tl-md shadow-lg bg-[#1A1A1A] border border-gray-800/50 flex items-center gap-3">
 											<div className="flex space-x-1">
-												<div className="w-2 h-2 bg-[#00d462] rounded-full animate-bounce"></div>
-												<div className="w-2 h-2 bg-[#00d462] rounded-full animate-bounce delay-100"></div>
-												<div className="w-2 h-2 bg-[#00d462] rounded-full animate-bounce delay-200"></div>
+												<div className="w-2 h-2 bg-[#60a5fa] rounded-full animate-bounce"></div>
+												<div className="w-2 h-2 bg-[#60a5fa] rounded-full animate-bounce delay-100"></div>
+												<div className="w-2 h-2 bg-[#60a5fa] rounded-full animate-bounce delay-200"></div>
 											</div>
 											<span className="text-sm text-gray-400">
 												Thinking...
@@ -619,7 +619,7 @@ const ChatbotPage = () => {
 					{showScrollButton && (
 						<button
 							onClick={scrollToBottom}
-							className="absolute bottom-24 right-8 w-10 h-10 bg-[#00d462] hover:bg-[#00b84d] text-black rounded-full shadow-lg hover:shadow-xl transition-all duration-200 flex items-center justify-center z-10"
+							className="absolute bottom-24 right-8 w-10 h-10 bg-[#60a5fa] hover:bg-[#3b82f6] text-black rounded-full shadow-lg hover:shadow-xl transition-all duration-200 flex items-center justify-center z-10"
 						>
 							<FaChevronRight className="rotate-90" />
 						</button>
@@ -627,8 +627,8 @@ const ChatbotPage = () => {
 
 					<div className="border-t border-gray-800/40 bg-[#0D0D0D] p-4">
 						<div className="max-w-4xl mx-auto">
-							<div className="flex items-end gap-3 bg-[#1A1A1A] border border-gray-700 rounded-2xl p-3 focus-within:border-[#00d462] transition-all duration-200 shadow-lg">
-								<button className="p-2 text-gray-400 hover:text-[#00d462] transition-colors rounded-lg hover:bg-[#2A2A2A]">
+							<div className="flex items-end gap-3 bg-[#1A1A1A] border border-gray-700 rounded-2xl p-3 focus-within:border-[#60a5fa] transition-all duration-200 shadow-lg">
+								<button className="p-2 text-gray-400 hover:text-[#60a5fa] transition-colors rounded-lg hover:bg-[#2A2A2A]">
 									<FaPaperclip className="text-lg" />
 								</button>
 								<textarea
@@ -647,13 +647,13 @@ const ChatbotPage = () => {
 									style={{ minHeight: "24px" }}
 								/>
 								<div className="flex items-center gap-2">
-									<button className="p-2 text-gray-400 hover:text-[#00d462] transition-colors rounded-lg hover:bg-[#2A2A2A]">
+									<button className="p-2 text-gray-400 hover:text-[#60a5fa] transition-colors rounded-lg hover:bg-[#2A2A2A]">
 										<FaMicrophone className="text-lg" />
 									</button>
 									<button
 										onClick={send}
 										disabled={!input.trim() || isLoading}
-										className="p-3 bg-gradient-to-r from-[#00d462] to-[#00b84d] hover:from-[#00b84d] hover:to-[#00d462] text-black rounded-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-[#00d462]/30 hover:scale-105"
+										className="p-3 bg-gradient-to-r from-[#60a5fa] to-[#3b82f6] hover:from-[#3b82f6] hover:to-[#60a5fa] text-black rounded-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-[#60a5fa]/30 hover:scale-105"
 									>
 										<FaPaperPlane className="text-sm" />
 									</button>

@@ -34,7 +34,7 @@ export default function InteractiveBackground() {
       draw() {
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(0, 212, 98, 0.1)';
+        ctx.fillStyle = 'rgba(96, 165, 250, 0.12)';
         ctx.fill();
       }
     }
@@ -64,7 +64,7 @@ export default function InteractiveBackground() {
             ctx.beginPath();
             ctx.moveTo(dot1.x, dot1.y);
             ctx.lineTo(dot2.x, dot2.y);
-            ctx.strokeStyle = `rgba(0, 212, 98, ${0.1 * (1 - distance / 100)})`;
+            ctx.strokeStyle = `rgba(96, 165, 250, ${0.12 * (1 - distance / 100)})`;
             ctx.stroke();
           }
         });

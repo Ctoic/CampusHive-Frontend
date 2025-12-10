@@ -341,6 +341,9 @@ const IntegratedChatbot = () => {
 		);
 	};
 
+	const showTyping =
+		loading && (messages.length === 0 || messages[messages.length - 1]?.message_type === "user");
+
 		return (
 			<div className="flex bg-black h-screen overflow-hidden">
 			{/* Sidebar */}
@@ -501,7 +504,7 @@ const IntegratedChatbot = () => {
 										key={index}
 										onClick={() => handleQuickAction(item.action)}
 										disabled={loading}
-									className="group bg-[#111111] border border-gray-800 hover:border-gray-600 hover:shadow-md rounded-xl p-5 transition-all duration-200 text-left disabled:opacity-50 disabled:cursor-not-allowed"
+									className="group bg-[#111111] hover:bg-[#161616] border border-gray-800 hover:border-gray-600 hover:shadow-md rounded-xl p-5 transition-all duration-200 text-left disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#60a5fa] focus-visible:ring-offset-0"
 									>
 									<div className={`w-10 h-10 bg-gray-800 rounded-xl flex items-center justify-center mb-3 shadow-sm`}>
 										<item.icon className="text-gray-200 text-base" />
@@ -582,7 +585,7 @@ const IntegratedChatbot = () => {
 							))}
 
 							{/* Loading indicator */}
-							{loading && (
+							{showTyping && (
 								<div className="flex justify-start">
 									<div className="flex items-start gap-3 max-w-[80%]">
 										<div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 bg-[#111111] border border-gray-800 shadow-sm overflow-hidden">

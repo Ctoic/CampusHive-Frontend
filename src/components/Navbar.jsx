@@ -39,7 +39,6 @@ const Navbar = () => {
 	const isHome = location.pathname === "/";
 
 	const navItems = [
-		{ id: "features", label: "Features" },
 		{ id: "benefits", label: "Benefits" },
 		{ id: "faq", label: "FAQ" },
 		{ id: "team", label: "Team" },
@@ -79,6 +78,14 @@ const Navbar = () => {
 								<>
 									<li>
 										<RouterLink
+											to="/about"
+											onClick={closeMenu}
+								className="hover:text-[#60a5fa] transition-colors duration-300">
+											About
+										</RouterLink>
+									</li>
+									<li>
+										<RouterLink
 											to="/"
 											onClick={closeMenu}
 								className="hover:text-[#60a5fa] transition-colors duration-300">
@@ -96,6 +103,16 @@ const Navbar = () => {
 										</li>
 									))}
 								</>
+							)}
+							{isHome && (
+								<li>
+									<RouterLink
+										to="/about"
+										onClick={closeMenu}
+								className="hover:text-[#60a5fa] transition-colors duration-300">
+										About
+									</RouterLink>
+								</li>
 							)}
 							{isAuthenticated ? (
 								<>
