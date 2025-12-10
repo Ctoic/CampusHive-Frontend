@@ -126,14 +126,14 @@ const Login = () => {
                     required
                     disabled={loading}
                   />
-                  <button
-                    type="button"
-                    onClick={togglePasswordVisibility}
-                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 hover:text-gray-300 transition-colors"
-                  >
-                    {showPassword ? <FaEyeSlash className="h-4 w-4" /> : <FaEye className="h-4 w-4" />}
-                  </button>
-                </div>
+					<button
+						type="button"
+						onClick={togglePasswordVisibility}
+						className="absolute inset-y-0 right-0 px-3 flex items-center bg-transparent hover:bg-transparent active:bg-transparent text-gray-500 hover:text-[#60a5fa] transition-colors focus:outline-none focus:ring-0"
+					>
+						{showPassword ? <FaEyeSlash className="h-4 w-4" /> : <FaEye className="h-4 w-4" />}
+					</button>
+				</div>
               </div>
 
               {/* Remember Me & Forgot Password */}

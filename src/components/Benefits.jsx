@@ -178,7 +178,7 @@ export default function Benefits() {
 				<div className="lg:col-span-2 flex flex-col justify-start text-start space-y-8 lg:sticky lg:top-8 lg:self-start">
 					<div className="space-y-6">
 					<span className="inline-block px-4 py-2 text-sm font-medium text-[#60a5fa] bg-[#60a5fa]/10 rounded-full">
-							BENEFITS
+							FEATURES
 						</span>
 						<h2 className="text-4xl font-bold lg:text-6xl xl:text-7xl tracking-tight text-white leading-tight">
 							Why Choose Campus Hive
