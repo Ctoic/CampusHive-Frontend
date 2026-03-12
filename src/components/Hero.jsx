@@ -1,10 +1,18 @@
 
-
+import { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import { Link as RouterLink } from "react-router-dom";
 import HeroImage from "../assets/Hero.png";
 
 const Hero = () => {
+	const featureLines = [
+		"for Timetables",
+		"for Faculty Discovery",
+		"for Exam Generation",
+		"for Degree Guidance",
+		"for Campus Announcements",
+	];
+	const [featureIndex, setFeatureIndex] = useState(0);
 	const [badgeRef, badgeInView] = useInView({
 		triggerOnce: true,
 		threshold: 0.1,
@@ -25,6 +33,13 @@ const Hero = () => {
 		triggerOnce: true,
 		threshold: 0.1,
 	});
+
+	useEffect(() => {
+		const intervalId = window.setInterval(() => {
+			setFeatureIndex((current) => (current + 1) % featureLines.length);
+		}, 2200);
+		return () => window.clearInterval(intervalId);
+	}, [featureLines.length]);
 
 	return (
 		<section className="relative min-h-screen overflow-hidden flex items-center justify-center bg-[#121212] text-gray-200">
@@ -69,11 +84,16 @@ const Hero = () => {
 									: "opacity-0 translate-y-5"
 							}`}>
 							<h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-[1.1] m-0">
-							<span className="inline-block bg-gradient-to-r from-[#60a5fa] via-[#3b82f6] to-[#60a5fa] bg-[length:200%_auto] bg-clip-text text-transparent animate-[gradient_8s_linear_infinite]">
+								<span className="inline-block bg-gradient-to-r from-[#60a5fa] via-[#3b82f6] to-[#60a5fa] bg-[length:200%_auto] bg-clip-text text-transparent animate-[gradient_8s_linear_infinite]">
 									CampusHive
 								</span>
 								<span className="block mt-2 text-gray-200 text-2xl sm:text-3xl lg:text-4xl">
 									Intelligent Campus Agents
+								</span>
+								<span
+									key={featureLines[featureIndex]}
+									className="mt-4 block min-h-[2.5rem] text-base font-medium uppercase tracking-[0.26em] text-[#93c5fd] sm:min-h-[3rem] sm:text-lg lg:text-xl animate-[heroWordIn_450ms_ease-out]">
+									{featureLines[featureIndex]}
 								</span>
 							</h1>
 						</div>
@@ -202,6 +222,19 @@ const Hero = () => {
 					}
 					100% {
 						background-position: 100% 50%;
+					}
+				}
+
+				@keyframes heroWordIn {
+					0% {
+						opacity: 0;
+						transform: translateY(10px);
+						filter: blur(6px);
+					}
+					100% {
+						opacity: 1;
+						transform: translateY(0);
+						filter: blur(0);
 					}
 				}
 

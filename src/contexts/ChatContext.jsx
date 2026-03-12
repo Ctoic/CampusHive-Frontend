@@ -3,6 +3,23 @@ import apiClient from '../lib/api';
 
 const ChatContext = createContext();
 
+const parseSSEEvents = (buffer) => {
+  const parts = buffer.split('\n\n');
+  const remainder = parts.pop() ?? '';
+  const events = parts
+    .map((part) =>
+      part
+        .split('\n')
+        .filter((line) => line.startsWith('data: '))
+        .map((line) => line.slice(6))
+        .join('\n')
+        .trim()
+    )
+    .filter(Boolean);
+
+  return { events, remainder };
+};
+
 export const useChat = () => {
   const context = useContext(ChatContext);
   if (!context) {
@@ -142,6 +159,7 @@ export const ChatProvider = ({ children }) => {
       // Handle streaming response
       const reader = response.body.getReader();
       const decoder = new TextDecoder();
+      let buffer = '';
       let agentMessage = {
         id: Date.now() + 1,
         message_type: 'agent',
@@ -158,34 +176,31 @@ export const ChatProvider = ({ children }) => {
           const { done, value } = await reader.read();
           if (done) break;
 
-          const chunk = decoder.decode(value);
-          const lines = chunk.split('\n');
+          buffer += decoder.decode(value, { stream: true });
+          const parsed = parseSSEEvents(buffer);
+          buffer = parsed.remainder;
 
-          for (const line of lines) {
-            if (line.startsWith('data: ')) {
-              try {
-                const data = JSON.parse(line.slice(6));
-                
-                if (data.response) {
-                  // Update the agent message content
-                  setMessages(prev => 
-                    prev.map(msg => 
-                      msg.id === agentMessage.id 
-                        ? { ...msg, content: data.response }
-                        : msg
-                    )
-                  );
-                } else if (data.error) {
-                  setError(data.error);
-                } else if (data.event === 'title' && data.title) {
-                  // Update session title if provided
-                  if (currentSession && currentSession.id === targetSessionId) {
-                    setCurrentSession(prev => ({ ...prev, display_title: data.title }));
-                  }
+          for (const eventText of parsed.events) {
+            try {
+              const data = JSON.parse(eventText);
+
+              if (data.response) {
+                setMessages(prev => 
+                  prev.map(msg => 
+                    msg.id === agentMessage.id 
+                      ? { ...msg, content: data.response }
+                      : msg
+                  )
+                );
+              } else if (data.error) {
+                setError(data.error);
+              } else if (data.event === 'title' && data.title) {
+                if (currentSession && currentSession.id === targetSessionId) {
+                  setCurrentSession(prev => ({ ...prev, display_title: data.title }));
                 }
-              } catch (parseError) {
-                console.warn('Failed to parse SSE data:', parseError);
               }
+            } catch (parseError) {
+              console.warn('Failed to parse SSE data:', parseError);
             }
           }
         }

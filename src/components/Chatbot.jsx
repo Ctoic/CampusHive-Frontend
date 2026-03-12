@@ -21,6 +21,10 @@ import {
 	FaPaperclip,
 } from "react-icons/fa";
 
+const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || "")
+	.trim()
+	.replace(/\/+$/, "");
+
 const Sidebar = ({ onNewChat, conversations, onSelectConversation, currentConversationId }) => {
 	const [searchQuery, setSearchQuery] = useState("");
 	
@@ -186,14 +190,20 @@ const ChatbotPage = () => {
 
 	const sendMessageToAPI = async (message) => {
 		try {
-			const response = await fetch("http://localhost:8000/chat", {
+			const token = localStorage.getItem("auth_token");
+			const endpoint = API_BASE_URL
+				? `${API_BASE_URL}/multiagent/chat`
+				: "/multiagent/chat";
+			const response = await fetch(endpoint, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
+					...(token ? { Authorization: `Bearer ${token}` } : {}),
 				},
 				body: JSON.stringify({
-					user_id: userId,
-					message: message,
+					question: message,
+					session_id: userId || "default",
+					stream: false,
 				}),
 			});
 

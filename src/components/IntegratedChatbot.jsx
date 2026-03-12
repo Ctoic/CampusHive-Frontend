@@ -11,18 +11,51 @@ import {
 	FaUser,
 	FaPlus,
 	FaSignOutAlt,
-	FaUserCircle,
 	FaTrash,
 	FaBars,
 	FaExclamationTriangle,
 	FaSync,
 	FaClipboard,
 	FaGraduationCap,
+	FaTimes,
+	FaMagic,
+	FaBookOpen,
+	FaClock,
+	FaRegCopy,
 } from "react-icons/fa";
 import { useAuth } from "../contexts/AuthContext";
 import { useChat } from "../contexts/ChatContext";
 import { useNavigate } from "react-router-dom";
 import logo from "../assets/logo.png";
+import "./IntegratedChatbot.css";
+
+const formatRelativeTime = (value) => {
+	if (!value) return "";
+	const date = new Date(value);
+	if (Number.isNaN(date.getTime())) return "";
+	const diffMs = Date.now() - date.getTime();
+	const diffMinutes = Math.round(diffMs / 60000);
+	if (diffMinutes < 1) return "Just now";
+	if (diffMinutes < 60) return `${diffMinutes}m ago`;
+	const diffHours = Math.round(diffMinutes / 60);
+	if (diffHours < 24) return `${diffHours}h ago`;
+	return date.toLocaleDateString([], { month: "short", day: "numeric" });
+};
+
+const formatClockTime = (value) => {
+	if (!value) return "";
+	const date = new Date(value);
+	if (Number.isNaN(date.getTime())) return "";
+	return date.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+};
+
+const getSessionPreview = (session) => {
+	if (!session) return "Ready for a new question";
+	if (session.display_title && session.display_title !== session.session_name) {
+		return session.display_title;
+	}
+	return session.session_name || "New Chat";
+};
 
 const IntegratedChatbot = () => {
 	// Component for integrated chatbot interface
@@ -37,48 +70,100 @@ const IntegratedChatbot = () => {
 		loadSessions,
 		createSession,
 		loadSession,
-		updateSession,
 		deleteSession,
 		sendMessage,
-		clearCurrentSession,
 		clearError,
 	} = useChat();
 
 	const [input, setInput] = useState("");
 	const [showErrorDetails, setShowErrorDetails] = useState(false);
+	const [sidebarOpen, setSidebarOpen] = useState(false);
 	const lastActionRef = useRef("");
-	const endRef = useRef(null);
+	const textareaRef = useRef(null);
+	const threadRef = useRef(null);
 
 	useEffect(() => {
 		loadSessions();
 	}, [loadSessions]);
 
 	useEffect(() => {
-		endRef.current?.scrollIntoView({ behavior: "smooth" });
+		if (!threadRef.current) return;
+		threadRef.current.scrollTo({
+			top: threadRef.current.scrollHeight,
+			behavior: "smooth",
+		});
 	}, [messages]);
+
+	useEffect(() => {
+		const html = document.documentElement;
+		const body = document.body;
+		const root = document.getElementById("root");
+
+		const previous = {
+			htmlOverflow: html.style.overflow,
+			htmlHeight: html.style.height,
+			bodyOverflow: body.style.overflow,
+			bodyHeight: body.style.height,
+			rootHeight: root?.style.height || "",
+		};
+
+		window.scrollTo(0, 0);
+		html.style.overflow = "hidden";
+		html.style.height = "100%";
+		body.style.overflow = "hidden";
+		body.style.height = "100%";
+		if (root) {
+			root.style.height = "100%";
+		}
+
+		return () => {
+			html.style.overflow = previous.htmlOverflow;
+			html.style.height = previous.htmlHeight;
+			body.style.overflow = previous.bodyOverflow;
+			body.style.height = previous.bodyHeight;
+			if (root) {
+				root.style.height = previous.rootHeight;
+			}
+		};
+	}, []);
+
+	useEffect(() => {
+		if (!textareaRef.current) return;
+		textareaRef.current.style.height = "0px";
+		textareaRef.current.style.height = `${Math.min(textareaRef.current.scrollHeight, 180)}px`;
+	}, [input]);
 
 	const handleLogout = async () => {
 		await logout();
 		navigate("/");
 	};
 
-  const newChat = async () => {
-    try {
-      // Create new session without clearing current one first
-      // This ensures we get a fresh session ID
-      const created = await createSession("New Chat");
-      if (created?.id) {
-        // Load the new session which will become the current one
-        await loadSession(created.id);
-      }
-    } catch (error) {
-      console.error("Failed to create new chat:", error);
-    }
-  };
+	const ensureActiveSession = async () => {
+		if (currentSession?.id) return currentSession.id;
+		const created = await createSession("New Chat");
+		if (!created?.id) {
+			throw new Error("Failed to create a new chat session");
+		}
+		await loadSession(created.id);
+		return created.id;
+	};
+
+	const newChat = async () => {
+		try {
+			const created = await createSession("New Chat");
+			if (created?.id) {
+				await loadSession(created.id);
+				setSidebarOpen(false);
+			}
+		} catch (error) {
+			console.error("Failed to create new chat:", error);
+		}
+	};
 
 	const handleLoadSession = async (sessionId) => {
 		try {
 			await loadSession(sessionId);
+			setSidebarOpen(false);
 		} catch (error) {
 			console.error("Failed to load session:", error);
 		}
@@ -94,21 +179,14 @@ const IntegratedChatbot = () => {
 	};
 
 	const handleQuickAction = async (action) => {
-    try {
+		try {
 			lastActionRef.current = action;
-      // If no current session, create a new one
-      if (!currentSession) {
-        const created = await createSession("New Chat");
-        if (created?.id) {
-          await loadSession(created.id);
-        }
-      }
-      // Send message to current session (or newly created one)
-      await sendMessage(action, currentSession?.id);
-    } catch (error) {
-      console.error("Failed to handle quick action:", error);
-    }
-  };
+			const sessionId = await ensureActiveSession();
+			await sendMessage(action, sessionId);
+		} catch (error) {
+			console.error("Failed to handle quick action:", error);
+		}
+	};
 
 	const send = async () => {
 		if (!input.trim()) return;
@@ -116,15 +194,8 @@ const IntegratedChatbot = () => {
 		setInput("");
 		try {
 			lastActionRef.current = currentInput;
-      // If no current session, create a new one
-      if (!currentSession) {
-        const created = await createSession("New Chat");
-        if (created?.id) {
-          await loadSession(created.id);
-        }
-      }
-      // Send message to current session (or newly created one)
-      await sendMessage(currentInput, currentSession?.id);
+			const sessionId = await ensureActiveSession();
+			await sendMessage(currentInput, sessionId);
 		} catch (error) {
 			console.error("Failed to send message:", error);
 		}
@@ -146,16 +217,20 @@ const IntegratedChatbot = () => {
 			return;
 		}
 		try {
-			if (!currentSession) {
-				const created = await createSession("New Chat");
-				if (created?.id) {
-					await loadSession(created.id);
-				}
-			}
-			await sendMessage(last, currentSession?.id);
+			const sessionId = await ensureActiveSession();
+			await sendMessage(last, sessionId);
 			clearError();
 		} catch (err) {
 			console.error("Retry failed:", err);
+		}
+	};
+
+	const copyMessage = async (text) => {
+		if (!text) return;
+		try {
+			await navigator.clipboard.writeText(text);
+		} catch (_) {
+			// no-op
 		}
 	};
 
@@ -316,23 +391,24 @@ const IntegratedChatbot = () => {
 		const rollNumber = user?.roll_no || user?.registration_no || user?.reg_no;
 		const program = user?.program || user?.department || user?.degree;
 		return (
-			<div className="max-w-2xl mx-auto mb-10">
-				<div className="bg-[#0D0D0D] border border-gray-800 rounded-2xl p-5 flex items-center gap-4">
-					<div className="w-12 h-12 bg-gray-800 rounded-xl flex items-center justify-center">
-						<FaUser className="text-gray-200" />
+			<div className="chatbot-panel rounded-[28px] p-6">
+				<p className="mb-4 text-xs uppercase tracking-[0.22em] text-slate-400">Student Snapshot</p>
+				<div className="flex items-center gap-4 rounded-3xl border border-white/8 bg-white/[0.03] p-4">
+					<div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-cyan-400/10 text-cyan-100">
+						<FaUser className="text-base" />
 					</div>
 					<div className="flex-1 min-w-0">
-						<p className="text-white font-semibold truncate">{fullName}</p>
-						<div className="flex flex-wrap gap-3 text-xs text-gray-400 mt-1">
-							<span className="px-2 py-0.5 bg-[#111111] border border-gray-800 rounded">Role: Student</span>
+						<p className="truncate font-semibold text-white">{fullName}</p>
+						<div className="mt-2 flex flex-wrap gap-2 text-xs text-slate-300">
+							<span className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1">Role: Student</span>
 							{email ? (
-								<span className="px-2 py-0.5 bg-[#111111] border border-gray-800 rounded">{email}</span>
+								<span className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1">{email}</span>
 							) : null}
 							{rollNumber ? (
-								<span className="px-2 py-0.5 bg-[#111111] border border-gray-800 rounded">Roll: {rollNumber}</span>
+								<span className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1">Roll: {rollNumber}</span>
 							) : null}
 							{program ? (
-								<span className="px-2 py-0.5 bg-[#111111] border border-gray-800 rounded">{program}</span>
+								<span className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1">{program}</span>
 							) : null}
 						</div>
 					</div>
@@ -343,58 +419,157 @@ const IntegratedChatbot = () => {
 
 	const showTyping =
 		loading && (messages.length === 0 || messages[messages.length - 1]?.message_type === "user");
+	const hasMessages = messages.length > 0;
 
-		return (
-			<div className="flex bg-black h-screen overflow-hidden">
+	const experienceCards = role === "faculty"
+		? [
+			{
+				icon: FaGraduationCap,
+				title: "Assessment Studio",
+				description: "Build quizzes, exams, and rubrics with the right academic tone.",
+			},
+			{
+				icon: FaBookOpen,
+				title: "Course Alignment",
+				description: "Map CLOs, PLOs, and content coverage without manual bookkeeping.",
+			},
+			{
+				icon: FaClock,
+				title: "Teaching Workflow",
+				description: "Draft plans, summarize course material, and answer student-facing queries.",
+			},
+		]
+		: [
+			{
+				icon: FaRegCalendarAlt,
+				title: "Weekly Planner",
+				description: "Build class schedules by course and section, then spot timing clashes quickly.",
+			},
+			{
+				icon: FaUniversity,
+				title: "Campus Knowledge",
+				description: "Get grounded answers about faculty, admissions, scholarships, and policies.",
+			},
+			{
+				icon: FaMagic,
+				title: "Smart Follow-ups",
+				description: "Ask natural follow-ups like 'Monday only' or 'compare the two options'.",
+			},
+		];
+
+	const followUpPrompts = role === "faculty"
+		? [
+			"Generate a rubric for my operating systems presentation",
+			"Summarize CLO coverage for this week",
+			"Draft a short quiz announcement for LMS",
+		]
+		: [
+			"Show Monday only",
+			"Find faculty contact details",
+			"Explain scholarship options",
+		];
+
+	const activeTitle = currentSession?.display_title || currentSession?.session_name || "Campus assistant";
+	const activeSubtitle =
+		hasMessages
+			? role === "faculty"
+				? "Focused academic thread"
+				: "Focused campus conversation"
+			: role === "faculty"
+				? "Assessment planning, course support, and academic tooling"
+				: "Schedules, faculty lookup, scholarships, and campus guidance";
+
+	return (
+		<div className="chatbot-shell fixed inset-0 flex overflow-hidden bg-[#07111f] text-white">
+			<div className={`chatbot-overlay ${sidebarOpen ? "chatbot-overlay--open" : ""}`} onClick={() => setSidebarOpen(false)} />
 			{/* Sidebar */}
-			<div className="w-72 bg-[#0D0D0D] flex flex-col overflow-hidden">
-				<div className="p-6">
-					<div className="flex items-center gap-2">
-						<img src={logo} alt="CampusHive" className="w-10 h-10" />
-						<h1 className="text-white font-semibold text-xl">CampusHive</h1>
+			<aside className={`chatbot-sidebar ${sidebarOpen ? "chatbot-sidebar--open" : ""} flex h-full w-80 flex-col overflow-hidden`}>
+				<div className="border-b border-white/10 px-5 pb-4 pt-4">
+					<div className="mb-4 flex items-center justify-between">
+						<div className="flex items-center gap-3">
+							<div className="chatbot-brand-mark">
+								<img src={logo} alt="CampusHive" className="h-11 w-11 rounded-2xl object-cover" />
+							</div>
+							<div>
+								<p className="font-semibold tracking-wide text-white">CampusHive</p>
+								<p className="text-xs text-slate-300/80">Academic copilot</p>
+							</div>
+						</div>
+						<button
+							onClick={() => setSidebarOpen(false)}
+							className="chatbot-mobile-close rounded-full p-2 text-slate-300 hover:bg-white/10"
+							type="button"
+						>
+							<FaTimes className="text-sm" />
+						</button>
+					</div>
+					<div className="chatbot-sidebar-card rounded-3xl p-4">
+						{hasMessages ? (
+							<>
+								<p className="text-[11px] uppercase tracking-[0.24em] text-cyan-200/70">Thread active</p>
+								<p className="mt-2 text-sm leading-6 text-slate-300">
+									Recent timetable and chat context are active for this conversation.
+								</p>
+							</>
+						) : (
+							<>
+								<p className="text-[11px] uppercase tracking-[0.24em] text-cyan-200/70">Workspace ready</p>
+								<h1 className="mb-1 mt-2 text-xl font-semibold text-white">Ask with context</h1>
+								<p className="text-sm leading-relaxed text-slate-300">
+									Use sections, days, or follow-ups. The assistant keeps your recent timetable context in view.
+								</p>
+							</>
+						)}
 					</div>
 				</div>
-				{/* Sidebar Header */}
-				<div className="p-4 border-b border-gray-800">
+				<div className="border-b border-white/10 p-4">
 					<button
 						onClick={newChat}
-						className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-gray-800 hover:bg-gray-700 text-white rounded-lg transition-colors shadow-sm"
+						className="chatbot-primary-button w-full justify-center gap-2 px-4 py-3 text-sm font-medium"
 					>
 						<FaPlus className="text-sm" />
-						<span className="text-sm font-medium">New Chat</span>
+						<span>New Conversation</span>
 					</button>
 				</div>
 
 				{/* Sessions List */}
-				<div className="flex-1 overflow-y-auto p-3">
+				<div className="min-h-0 flex-1 overflow-y-auto px-3 py-4">
+					<div className="mb-3 px-2">
+						<p className="text-xs uppercase tracking-[0.2em] text-slate-400">Recent Threads</p>
+					</div>
 					{sessions.length === 0 ? (
-						<p className="text-gray-500 text-sm text-center py-8">
+						<p className="py-8 text-center text-sm text-slate-400">
 							No conversations yet
 						</p>
 					) : (
-						<div className="space-y-1">
+						<div className="space-y-2">
 							{sessions.map((session) => (
 								<div
 									key={session.id}
 									onClick={() => handleLoadSession(session.id)}
-								className={`group relative px-3 py-2.5 rounded-lg cursor-pointer transition-all ${
+									className={`group relative cursor-pointer rounded-2xl border px-4 py-3 transition-all ${
 										currentSession?.id === session.id
-											? "bg-gray-800"
-											: "hover:bg-gray-800"
+											? "border-cyan-400/40 bg-cyan-500/10 shadow-[0_8px_30px_rgba(34,211,238,0.08)]"
+											: "border-white/5 bg-white/[0.03] hover:border-white/15 hover:bg-white/[0.05]"
 										}`}
 								>
-									<div className="flex items-center justify-between gap-2">
+									<div className="flex items-start justify-between gap-3">
 										<div className="flex-1 min-w-0">
-											<p className="text-white text-sm font-medium truncate">
+											<p className="truncate text-sm font-medium text-white">
 												{session.display_title || session.session_name}
 											</p>
-											<p className="text-gray-400 text-xs mt-0.5">
-												{session.message_count} messages
+											<p className="mt-1 line-clamp-2 text-xs leading-relaxed text-slate-400">
+												{getSessionPreview(session)}
 											</p>
+											<div className="mt-3 flex items-center gap-2 text-[11px] text-slate-500">
+												<span>{session.message_count} messages</span>
+												<span className="h-1 w-1 rounded-full bg-slate-600" />
+												<span>{formatRelativeTime(session.updated_at || session.created_at)}</span>
+											</div>
 										</div>
 										<button
 											onClick={(e) => handleDeleteSession(session.id, e)}
-										className="opacity-0 group-hover:opacity-100 p-1.5 text-gray-400 hover:bg-red-500/10 transition-all rounded"
+											className="rounded-full p-2 text-slate-400 opacity-0 transition-all group-hover:opacity-100 hover:bg-red-500/10 hover:text-red-300"
 										>
 											<FaTrash className="text-xs" />
 										</button>
@@ -406,36 +581,66 @@ const IntegratedChatbot = () => {
 				</div>
 
 				{/* User Info - Bottom */}
-				<div className="p-3 border-t border-gray-800">
-						<div className="flex items-center gap-3 p-3 bg-[#111111] rounded-lg border border-gray-800">
-							<div className="w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center flex-shrink-0">
+				<div className="border-t border-white/10 p-3">
+					<div className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.04] p-3">
+						<div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-2xl bg-white/10">
 							<span className="text-white text-sm font-semibold">
 								{user?.username?.charAt(0).toUpperCase() || "U"}
 							</span>
 						</div>
 						<div className="flex-1 min-w-0">
-							<p className="text-white text-sm font-medium truncate">
+							<p className="truncate text-sm font-medium text-white">
 								{user?.username || "User"}
 							</p>
-							<p className="text-gray-400 text-xs truncate">
+							<p className="truncate text-xs text-slate-400">
 								{user?.email || ""}
 							</p>
 						</div>
 						<button
 							onClick={handleLogout}
-							className="p-1.5 text-gray-400 hover:bg-gray-700 transition-colors rounded"
+							className="rounded-full p-2 text-slate-400 transition-colors hover:bg-white/10 hover:text-white"
 							title="Logout"
 						>
 							<FaSignOutAlt className="text-sm" />
 						</button>
 					</div>
 				</div>
-			</div>
+			</aside>
 
-			<main className="flex-1 flex flex-col bg-black">
+				<main className="chatbot-main relative flex min-h-0 flex-1 flex-col overflow-hidden">
+				<div className="chatbot-main-bg" />
+				<header className="relative z-10 border-b border-white/10 bg-slate-950/55 px-4 py-4 backdrop-blur-xl md:px-6">
+					<div className="mx-auto flex max-w-6xl items-center gap-3">
+						<button
+							type="button"
+							onClick={() => setSidebarOpen(true)}
+							className="chatbot-mobile-toggle rounded-2xl border border-white/10 bg-white/[0.06] p-3 text-slate-200 hover:bg-white/[0.1]"
+						>
+							<FaBars className="text-sm" />
+						</button>
+						<div className="min-w-0 flex-1">
+							<div className="flex items-center gap-3">
+								<h2 className="truncate text-lg font-semibold text-white md:text-xl">{activeTitle}</h2>
+								<span className="hidden rounded-full border border-cyan-400/30 bg-cyan-400/10 px-3 py-1 text-[11px] font-medium uppercase tracking-[0.2em] text-cyan-100 md:inline-flex">
+									{role === "faculty" ? "Faculty Mode" : "Student Mode"}
+								</span>
+							</div>
+							<p className="mt-1 truncate text-sm text-slate-400">{activeSubtitle}</p>
+						</div>
+						<div className="hidden items-center gap-2 lg:flex">
+							<div className="rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-2 text-xs text-slate-300">
+								{sessions.length} saved threads
+							</div>
+							<div className="rounded-2xl border border-emerald-400/25 bg-emerald-500/10 px-4 py-2 text-xs text-emerald-200">
+								Knowledge connected
+							</div>
+						</div>
+					</div>
+				</header>
+
 			{/* Error Display */}
 			{error && (
-				<div className="px-6 py-4 border-b border-red-900/40 bg-red-950">
+				<div className="relative z-10 border-b border-red-900/40 bg-red-950/80 px-6 py-4 backdrop-blur">
 					<div className="max-w-4xl mx-auto">
 						<div className="flex items-start gap-3">
 							<div className="mt-0.5">
@@ -486,49 +691,102 @@ const IntegratedChatbot = () => {
 
 				{/* Chat Content */}
 				{messages.length === 0 ? (
-					<div className="flex-1 overflow-y-auto bg-black">
-						<div className="max-w-4xl mx-auto px-6 py-12">
-						{/* Minimal Welcome */}
-						<div className="text-center mb-10">
-							<div className="inline-flex w-14 h-14 bg-gray-800 rounded-2xl items-center justify-center mb-4 shadow-lg">
-								<FaGraduationCap className="text-gray-200 text-2xl" />
-							</div>
-							<h2 className="text-2xl font-semibold text-white">New chat</h2>
-							<p className="text-gray-500 text-sm mt-2">Ask a question to get started.</p>
-						</div>
-
-						{/* Quick Actions (monochrome) */}
-							<div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-								{quickActions.map((item, index) => (
-									<button
-										key={index}
-										onClick={() => handleQuickAction(item.action)}
-										disabled={loading}
-									className="group bg-[#111111] hover:bg-[#161616] border border-gray-800 hover:border-gray-600 hover:shadow-md rounded-xl p-5 transition-all duration-200 text-left disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#60a5fa] focus-visible:ring-offset-0"
-									>
-									<div className={`w-10 h-10 bg-gray-800 rounded-xl flex items-center justify-center mb-3 shadow-sm`}>
-										<item.icon className="text-gray-200 text-base" />
+					<div className="relative z-10 flex-1 overflow-y-auto">
+						<div className="mx-auto max-w-6xl px-6 py-10">
+							<div className="grid gap-8 xl:grid-cols-[1.15fr_0.85fr]">
+								<div>
+									<div className="chatbot-hero-card mb-8 rounded-[32px] p-8">
+										<div className="mb-6 inline-flex items-center gap-2 rounded-full border border-cyan-300/20 bg-cyan-300/10 px-4 py-2 text-xs uppercase tracking-[0.26em] text-cyan-100">
+											<FaMagic className="text-[10px]" />
+											Campus support workspace
 										</div>
-									<h3 className="text-white text-sm font-semibold mb-1">
-											{item.title}
-										</h3>
-									<p className="text-gray-500 text-xs leading-relaxed mb-3 line-clamp-2">
-											{item.description}
+										<div className="mb-4 flex h-16 w-16 items-center justify-center rounded-[24px] bg-white/10 shadow-[0_10px_30px_rgba(14,165,233,0.15)]">
+											<FaGraduationCap className="text-3xl text-cyan-100" />
+										</div>
+										<h2 className="mb-3 text-4xl font-semibold tracking-tight text-white">
+											Ask sharper questions, get cleaner answers.
+										</h2>
+										<p className="max-w-2xl text-base leading-7 text-slate-300">
+											Use CampusHive for schedules, faculty lookup, policies, and academic guidance. The interface now supports follow-up prompts, recent context, and faster access to the most common campus tasks.
 										</p>
-									<div className="flex items-center text-xs text-gray-400 group-hover:text-gray-200 transition-colors font-medium">
-										<span>Use</span>
-											<FaChevronRight className="ml-2 text-xs group-hover:translate-x-1 transition-transform" />
+										<div className="mt-8 flex flex-wrap gap-3">
+											{followUpPrompts.map((prompt) => (
+												<button
+													key={prompt}
+													type="button"
+													onClick={() => handleQuickAction(prompt)}
+													disabled={loading}
+													className="rounded-full border border-white/10 bg-white/[0.06] px-4 py-2 text-sm text-slate-200 transition hover:border-cyan-300/30 hover:bg-cyan-400/10 disabled:opacity-50"
+												>
+													{prompt}
+												</button>
+											))}
 										</div>
-									</button>
-								))}
-							</div>
+									</div>
 
+									<div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+										{quickActions.map((item, index) => (
+											<button
+												key={index}
+												onClick={() => handleQuickAction(item.action)}
+												disabled={loading}
+												className="chatbot-action-card group rounded-[28px] p-5 text-left disabled:opacity-50 disabled:cursor-not-allowed"
+											>
+												<div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.08]">
+													<item.icon className="text-base text-cyan-100" />
+												</div>
+												<h3 className="mb-2 text-base font-semibold text-white">
+													{item.title}
+												</h3>
+												<p className="mb-4 text-sm leading-6 text-slate-300">
+													{item.description}
+												</p>
+												<div className="flex items-center text-xs font-medium uppercase tracking-[0.18em] text-cyan-100/90">
+													Run prompt
+													<FaChevronRight className="ml-2 text-xs transition-transform group-hover:translate-x-1" />
+												</div>
+											</button>
+										))}
+									</div>
+								</div>
+
+								<div className="space-y-4">
+									<div className="chatbot-panel rounded-[28px] p-6">
+										<p className="mb-4 text-xs uppercase tracking-[0.22em] text-slate-400">What Changed</p>
+										<div className="space-y-4">
+											{experienceCards.map((card) => (
+												<div key={card.title} className="rounded-3xl border border-white/8 bg-white/[0.03] p-4">
+													<div className="mb-3 flex h-11 w-11 items-center justify-center rounded-2xl bg-cyan-400/10 text-cyan-100">
+														<card.icon className="text-base" />
+													</div>
+													<h3 className="mb-1 text-sm font-semibold text-white">{card.title}</h3>
+													<p className="text-sm leading-6 text-slate-300">{card.description}</p>
+												</div>
+											))}
+										</div>
+									</div>
+
+									<StudentSummary />
+								</div>
+							</div>
 						</div>
 					</div>
 				) : (
 					/* Chat Messages */
-					<div className="flex-1 overflow-y-auto bg-black">
-						<div className="max-w-3xl mx-auto px-6 py-6 space-y-6">
+					<div className="chatbot-thread relative z-10 flex-1 overflow-y-auto">
+						<div ref={threadRef} className="mx-auto h-full max-w-4xl overflow-y-auto px-4 pb-8 pt-6 md:px-6">
+							<div className="mb-6 flex items-center justify-between gap-4 border-b border-white/6 pb-4">
+								<div>
+									<p className="text-[11px] uppercase tracking-[0.22em] text-slate-500">Live thread</p>
+									<p className="mt-1 text-sm text-slate-300">
+										{currentSession?.display_title || currentSession?.session_name || "Current conversation"}
+									</p>
+								</div>
+								<div className="hidden rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-xs text-slate-400 md:inline-flex">
+									{messages.length} message{messages.length === 1 ? "" : "s"}
+								</div>
+							</div>
+							<div className="space-y-6">
 							{messages.map((message, i) => (
 								<div
 									key={message.id || i}
@@ -546,25 +804,45 @@ const IntegratedChatbot = () => {
 										}`}
 									>
 										<div
-											className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 shadow-sm ${
+											className={`flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-2xl shadow-sm ${
 										message.message_type === "user"
-											? "bg-gray-800"
-													: "bg-[#111111] border border-gray-800"
+											? "bg-cyan-500/20 border border-cyan-400/20"
+													: "bg-white/[0.07] border border-white/10"
 											}`}
 										>
 										{message.message_type === "user" ? (
-											<FaUser className="text-gray-200 text-xs" />
+											<FaUser className="text-cyan-100 text-sm" />
 											) : (
-												<img src={logo} alt="CampusHive" className="w-8 h-8 rounded-full object-cover" />
+												<img src={logo} alt="CampusHive" className="h-10 w-10 rounded-2xl object-cover" />
 											)}
 										</div>
 										<div
-										className={`px-4 py-3 rounded-2xl ${
+										className={`message-card px-5 py-4 rounded-[24px] ${
 											message.message_type === "user"
-												? "bg-[#2A2A2A] text-white border border-gray-800"
-												: "bg-[#1A1A1A] text-gray-100 border border-gray-800 shadow-sm"
+												? "bg-[linear-gradient(135deg,rgba(8,47,73,0.88),rgba(16,65,109,0.88))] text-white border border-cyan-400/15"
+												: "bg-[linear-gradient(180deg,rgba(15,23,42,0.88),rgba(10,16,30,0.92))] text-gray-100 border border-white/10 shadow-sm"
 										}`}
 										>
+											<div className="mb-3 flex items-center justify-between gap-4">
+												<div>
+													<p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400/80">
+														{message.message_type === "user" ? "You" : "CampusHive"}
+													</p>
+													<p className="mt-1 text-[11px] text-slate-500">
+														{formatClockTime(message.created_at)}
+													</p>
+												</div>
+												{message.message_type === "agent" && message.content ? (
+													<button
+														type="button"
+														onClick={() => copyMessage(message.content)}
+														className="rounded-full border border-white/10 bg-white/[0.04] p-2 text-slate-400 transition hover:bg-white/[0.08] hover:text-white"
+														title="Copy response"
+													>
+														<FaRegCopy className="text-xs" />
+													</button>
+												) : null}
+											</div>
 											{message.message_type === "agent" ? (
 												<div className="text-sm prose prose-gray max-w-none">
 													<ReactMarkdown
@@ -588,57 +866,78 @@ const IntegratedChatbot = () => {
 							{showTyping && (
 								<div className="flex justify-start">
 									<div className="flex items-start gap-3 max-w-[80%]">
-										<div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 bg-[#111111] border border-gray-800 shadow-sm overflow-hidden">
-											<img src={logo} alt="CampusHive" className="w-8 h-8 object-cover" />
+										<div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-2xl border border-white/10 bg-white/[0.07] shadow-sm">
+											<img src={logo} alt="CampusHive" className="h-10 w-10 object-cover" />
 										</div>
-										<div className="px-4 py-3 rounded-2xl bg-[#111111] border border-gray-800 shadow-sm">
+										<div className="message-card rounded-[24px] border border-white/10 bg-[linear-gradient(180deg,rgba(15,23,42,0.88),rgba(10,16,30,0.92))] px-5 py-4 shadow-sm">
 											<div className="flex items-center gap-2">
 											<div className="flex space-x-1">
-												<div className="w-2 h-2 bg-gray-500 rounded-full animate-pulse"></div>
-												<div className="w-2 h-2 bg-gray-500 rounded-full animate-pulse delay-75"></div>
-												<div className="w-2 h-2 bg-gray-500 rounded-full animate-pulse delay-150"></div>
+												<div className="h-2 w-2 rounded-full bg-cyan-300 animate-pulse"></div>
+												<div className="h-2 w-2 rounded-full bg-cyan-300 animate-pulse delay-75"></div>
+												<div className="h-2 w-2 rounded-full bg-cyan-300 animate-pulse delay-150"></div>
 												</div>
-												<span className="text-sm text-gray-400">
-													Thinking...
+												<span className="text-sm text-slate-300">
+													Thinking through your request...
 												</span>
 											</div>
 										</div>
 									</div>
 								</div>
 							)}
-
-							<div ref={endRef} />
+							</div>
 						</div>
 					</div>
 				)}
 
 				{/* Chat Input */}
-				<div className="bg-[#0D0D0D]">
-					<div className="max-w-3xl mx-auto px-6 py-4">
-						<div className="flex items-center gap-3 bg-[#111111] border border-gray-800 rounded-xl py-3 px-4 focus-within:border-gray-600 focus-within:ring-2 focus-within:ring-gray-800 transition-all duration-200">
-							<input
-								type="text"
-								placeholder="Ask me anything about your campus..."
+				<div className="relative z-10 shrink-0 border-t border-white/10 bg-slate-950/65 backdrop-blur-xl">
+					<div className="mx-auto max-w-4xl px-4 py-4 md:px-6">
+						<div className={`chatbot-composer rounded-[28px] border border-white/10 bg-[linear-gradient(180deg,rgba(15,23,42,0.9),rgba(7,12,24,0.94))] p-3 shadow-[0_20px_60px_rgba(2,6,23,0.45)] ${hasMessages ? "chatbot-composer--compact" : ""}`}>
+							{!hasMessages ? (
+								<div className="mb-3 flex flex-wrap gap-2 px-1">
+									{quickActions.map((item) => (
+										<button
+											key={item.title}
+											type="button"
+											onClick={() => handleQuickAction(item.action)}
+											disabled={loading}
+											className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-xs text-slate-300 transition hover:border-cyan-300/30 hover:bg-cyan-400/10 disabled:opacity-50"
+										>
+											{item.title}
+										</button>
+									))}
+								</div>
+							) : null}
+							<div className="flex items-end gap-3">
+								<textarea
+									ref={textareaRef}
+									rows={1}
+									placeholder={role === "faculty" ? "Ask about exams, CLOs, outcomes, or course planning..." : "Ask about timetables, faculty, scholarships, or campus info..."}
 								value={input}
 								onChange={(e) => setInput(e.target.value)}
 								onKeyDown={(e) => {
-									if (e.key === "Enter") {
+									if (e.key === "Enter" && !e.shiftKey) {
 										e.preventDefault();
 										send();
 									}
 								}}
 								disabled={loading}
-								className="flex-1 bg-transparent text-white text-sm placeholder-gray-500 focus:outline-none disabled:opacity-50"
+									className="min-h-[52px] max-h-[180px] flex-1 resize-none bg-transparent px-3 py-2 text-sm leading-6 text-white placeholder:text-slate-500 focus:outline-none disabled:opacity-50"
 							/>
 							<button
 								onClick={send}
 								disabled={!input.trim() || loading}
-								className="p-2.5 bg-gray-800 hover:bg-gray-700 text-white rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0 shadow-sm"
+									className="chatbot-primary-button flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl p-0 disabled:cursor-not-allowed disabled:opacity-50"
 							>
-								<FaPaperPlane className="text-sm" />
+									<FaPaperPlane className="text-sm" />
 							</button>
+							</div>
+							<div className="mt-3 flex items-center justify-between px-2 text-[11px] text-slate-500">
+								<p>{hasMessages ? "Continue the thread or ask a follow-up." : "Press Enter to send. Use Shift + Enter for a new line."}</p>
+								<p>{input.trim().length} characters</p>
+							</div>
 						</div>
-						<p className="text-center text-xs text-gray-500 mt-3">
+						<p className="mt-3 text-center text-xs text-slate-500">
 							CampusHive AI can make mistakes. Please verify important information.
 						</p>
 					</div>

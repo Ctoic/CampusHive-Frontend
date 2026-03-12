@@ -1,10 +1,17 @@
 // API client configuration and utilities
-const API_BASE_URL = 'http://localhost:8000';
+const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || '')
+  .trim()
+  .replace(/\/+$/, '');
 
 class ApiClient {
   constructor() {
     this.baseURL = API_BASE_URL;
     this.token = localStorage.getItem('auth_token');
+  }
+
+  buildUrl(endpoint) {
+    const normalizedEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
+    return this.baseURL ? `${this.baseURL}${normalizedEndpoint}` : normalizedEndpoint;
   }
 
   // Set authentication token
@@ -32,7 +39,7 @@ class ApiClient {
 
   // Generic request method
   async request(endpoint, options = {}) {
-    const url = `${this.baseURL}${endpoint}`;
+    const url = this.buildUrl(endpoint);
     const config = {
       headers: this.getHeaders(),
       ...options,
@@ -182,8 +189,7 @@ class ApiClient {
 
   // Multiagent chat methods
   async sendChatMessage(question, sessionId = 'default', stream = true) {
-    const endpoint = '/multiagent/chat';
-    const url = `${this.baseURL}${endpoint}`;
+    const url = this.buildUrl('/multiagent/chat');
     
     const config = {
       method: 'POST',
@@ -277,7 +283,7 @@ class ApiClient {
   }
 
   async uploadExam(formData) {
-    const url = `${this.baseURL}/admin/exams/upload`;
+    const url = this.buildUrl('/admin/exams/upload');
     const config = {
       method: 'POST',
       headers: {
