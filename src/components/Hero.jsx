@@ -42,7 +42,7 @@ const Hero = () => {
 	}, [featureLines.length]);
 
 	return (
-		<section className="relative min-h-screen overflow-hidden flex items-center justify-center bg-[#121212] text-gray-200">
+		<section className="relative min-h-screen overflow-hidden flex items-center justify-center bg-[radial-gradient(circle_at_top_right,_rgba(96,165,250,0.16),_transparent_38%),linear-gradient(135deg,_#0b1220_0%,_#121212_52%,_#07111c_100%)] text-gray-200">
 			{/* Background Elements */}
 			<div className="absolute inset-0 z-[1]">
 				{/* Gradient Mesh */}
@@ -146,9 +146,9 @@ const Hero = () => {
 								</button>
 							</RouterLink>
 
-							<button className="px-6 py-3 min-w[160px] w-full sm:w-auto rounded-lg border border-white/10 bg-white/5 backdrop-blur-2xl text-white/70 cursor-pointer transition-all duration-300 hover:bg-white/10 hover:text-white hover:border-[#60a5fa]/30">
+							<a href="#benefits" className="inline-flex items-center justify-center px-6 py-3 min-w-[160px] w-full sm:w-auto rounded-lg border border-white/10 bg-white/5 backdrop-blur-2xl text-white/70 cursor-pointer transition-all duration-300 hover:bg-white/10 hover:text-white hover:border-[#60a5fa]/30">
 								Learn More
-							</button>
+							</a>
 						</div>
 					</div>
 
@@ -202,6 +202,22 @@ const Hero = () => {
 							</div>
 						</div>
 					</div>
+				</div>
+
+				<div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-px overflow-hidden rounded-xl border border-white/10 bg-white/10">
+					{[
+						["01", "Student-first", "Answers when campus gets busy"],
+						["02", "Faculty-ready", "Less admin, more teaching"],
+						["03", "Always evolving", "Built around FAST workflows"],
+					].map(([number, title, description]) => (
+						<div key={number} className="bg-[#0b1220]/80 px-5 py-4 sm:px-6">
+							<div className="flex items-center gap-3">
+								<span className="text-xs font-semibold tracking-[0.2em] text-[#60a5fa]">{number}</span>
+								<span className="text-sm font-semibold text-white">{title}</span>
+							</div>
+							<p className="mt-1 text-xs leading-relaxed text-white/45">{description}</p>
+						</div>
+					))}
 				</div>
 			</div>
 
